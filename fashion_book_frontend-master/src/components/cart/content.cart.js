@@ -47,6 +47,25 @@ class ContentCart extends Component {
     return /^\d{10,11}$/.test(phone);
   };
 
+  handleQRConfirmation = () => {
+    const { name, phone, address } = this.state;
+    
+    // Validate fields
+    if (!name || !phone || !address) {
+      alert('Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+
+    if (!this.isValidPhone(phone)) {
+      alert('Số điện thoại không hợp lệ');
+      return;
+    }
+
+    // Call payment action
+    this.props.payment(address, phone, name, this.state.total);
+    this.setState({ showQR: false });
+  };
+
   render() {
     return (
       <div>
@@ -144,28 +163,61 @@ class ContentCart extends Component {
         
         <Modal show={this.state.showQR} onHide={() => this.setState({ showQR: false })}>
           <Modal.Header closeButton>
-            <Modal.Title>Scan to Pay</Modal.Title>
+            <Modal.Title>Thông tin thanh toán</Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{ textAlign: 'center' }}>
-            <p>Vui lòng quét QR để thanh toán</p>
-            <img 
-              src="https://res.cloudinary.com/dhzlbonsg/image/upload/v1740711717/mazsv6idr4y4o7xegrmj.jpg"
-              alt="QR Code"
-              style={{ width: '256px', height: '256px' }}
-            />
+          <Modal.Body>
+            <form>
+              <div className="form-group" style={{ marginBottom: '15px' }}>
+                <label>Họ tên:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={this.state.name}
+                  onChange={(e) => this.setState({ name: e.target.value })}
+                  placeholder="Nhập họ tên"
+                />
+              </div>
+              <div className="form-group" style={{ marginBottom: '15px' }}>
+                <label>Số điện thoại:</label>
+                <input
+                  type="tel"
+                  className="form-control"
+                  value={this.state.phone}
+                  onChange={(e) => this.setState({ phone: e.target.value })}
+                  placeholder="Nhập số điện thoại"
+                />
+              </div>
+              <div className="form-group" style={{ marginBottom: '15px' }}>
+                <label>Địa chỉ:</label>
+                <textarea
+                  className="form-control"
+                  value={this.state.address}
+                  onChange={(e) => this.setState({ address: e.target.value })}
+                  placeholder="Nhập địa chỉ giao hàng"
+                />
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <p>Vui lòng quét QR để thanh toán</p>
+                <img 
+                  src="https://res.cloudinary.com/dhzlbonsg/image/upload/v1740711717/mazsv6idr4y4o7xegrmj.jpg"
+                  alt="QR Code"
+                  style={{ width: '256px', height: '256px' }}
+                />
+              </div>
+            </form>
           </Modal.Body>
           <Modal.Footer style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button 
               onClick={() => this.setState({ showQR: false })}
-              style={{ backgroundColor: '#E6E4DF', color: '#696763', width: '120px' }}
+              style={{ backgroundColor: '#E6E4DF', color: '#696763' }}
             >
-              Close
+              Đóng
             </Button>
             <Button 
               onClick={this.handleQRConfirmation}
-              style={{ backgroundColor: '#FE980F', color: 'white', width: '150px' }}
+              style={{ backgroundColor: '#FE980F', color: 'white' }}
             >
-              Đã thanh toán
+              Xác nhận thanh toán
             </Button>
           </Modal.Footer>
         </Modal>
