@@ -100,13 +100,35 @@ class ContentCart extends Component {
             <div className="row">
               <div className="col-md-12">
                 <div className="total_area">
-                  <ul>
-                    <li>Phí Vận Chuyển <span>0<sup>đ</sup></span></li>
-                    <li>Tổng Tiền <span>{this.state.total.toLocaleString()}<sup>đ</sup></span></li>
+                  <ul style={{ width: '100%' }}>
+                    <li style={{ width: '100%', display: 'flex', justifyContent: 'space-between', padding: '10px 0' }}>
+                      <span>Phí Vận Chuyển</span>
+                      <span>0<sup>đ</sup></span>
+                    </li>
+                    <li style={{ width: '100%', display: 'flex', justifyContent: 'space-between', padding: '10px 0' }}>
+                      <span>Tổng Tiền</span>
+                      <span>{this.state.total.toLocaleString()}<sup>đ</sup></span>
+                    </li>
                   </ul>
-                  <div className="button_container">
-                    <Button className="payment_button" onClick={this.handlePayment}>Payment</Button>
-                    <Link className="btn btn-default check_out" to={"/"}>Continue shopping</Link>
+                  <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+                    <Button 
+                      className="btn btn-default check_out" 
+                      onClick={this.handlePayment} 
+                      style={{ marginLeft: '40px', backgroundColor: '#FE980F', color: 'white' }}>
+                      Payment
+                    </Button>
+                    <Link 
+                      className="btn btn-default" 
+                      to={"/"} 
+                      style={{ 
+                        backgroundColor: '#E6E4DF', 
+                        color: '#696763', 
+                        fontSize: '16px',
+                        padding: '8px 20px',
+                        fontWeight: '500'
+                      }}>
+                      Continue shopping
+                    </Link>
                   </div>
                 </div>
               </div>
