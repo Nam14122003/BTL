@@ -100,33 +100,39 @@ class ContentCart extends Component {
             <div className="row">
               <div className="col-md-12">
                 <div className="total_area">
-                  <ul style={{ width: '100%' }}>
-                    <li style={{ width: '100%', display: 'flex', justifyContent: 'space-between', padding: '10px 0' }}>
+                  <ul style={{ width: '100%', marginBottom: '20px' }}>
+                    <li style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px', marginBottom: '10px' }}>
                       <span>Phí Vận Chuyển</span>
-                      <span>0<sup>đ</sup></span>
+                      <span style={{ minWidth: '120px', textAlign: 'right' }}>0<sup>đ</sup></span>
                     </li>
-                    <li style={{ width: '100%', display: 'flex', justifyContent: 'space-between', padding: '10px 0' }}>
+                    <li style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>
                       <span>Tổng Tiền</span>
-                      <span>{this.state.total.toLocaleString()}<sup>đ</sup></span>
+                      <span style={{ minWidth: '120px', textAlign: 'right' }}>{this.state.total.toLocaleString()}<sup>đ</sup></span>
                     </li>
                   </ul>
-                  <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'flex-end',
+                    gap: '20px',
+                    marginTop: '20px',
+                  }}>
                     <Button 
-                      className="btn btn-default check_out" 
-                      onClick={this.handlePayment} 
-                      style={{ marginLeft: '40px', backgroundColor: '#FE980F', color: 'white' }}>
+                      className="btn btn-default" 
+                      onClick={this.handlePayment}
+                      style={{ backgroundColor: '#FE980F', color: 'white' }}
+                    >
                       Payment
                     </Button>
                     <Link 
                       className="btn btn-default" 
-                      to={"/"} 
+                      to={"/"}
                       style={{ 
                         backgroundColor: '#E6E4DF', 
-                        color: '#696763', 
-                        fontSize: '16px',
-                        padding: '8px 20px',
-                        fontWeight: '500'
-                      }}>
+                        color: '#696763',
+                        minWidth: '120px', 
+                        textAlign: 'center'
+                      }}
+                    >
                       Continue shopping
                     </Link>
                   </div>
@@ -143,12 +149,12 @@ class ContentCart extends Component {
           <Modal.Body style={{ textAlign: 'center' }}>
             <p>Vui lòng quét QR để thanh toán</p>
             <img 
-              src="https://res.cloudinary.com/dhzlbonsg/image/upload/v1740711717/mazsv6idr4y4o7xegrmj.jpg" 
-              alt="QR Code" 
+              src="https://res.cloudinary.com/dhzlbonsg/image/upload/v1740711717/mazsv6idr4y4o7xegrmj.jpg"
+              alt="QR Code"
               style={{ width: '256px', height: '256px' }}
             />
           </Modal.Body>
-          <Modal.Footer style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem' }}>
+          <Modal.Footer style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button 
               onClick={() => this.setState({ showQR: false })}
               style={{ backgroundColor: '#E6E4DF', color: '#696763', width: '120px' }}
@@ -156,11 +162,7 @@ class ContentCart extends Component {
               Close
             </Button>
             <Button 
-              onClick={() => {
-                this.setState({ showQR: false });
-                // After payment is confirmed, redirect to home
-                window.location.href = '/';
-              }}
+              onClick={this.handleQRConfirmation}
               style={{ backgroundColor: '#FE980F', color: 'white', width: '150px' }}
             >
               Đã thanh toán
