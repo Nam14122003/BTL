@@ -142,7 +142,11 @@ class ContentCart extends Component {
           </Modal.Header>
           <Modal.Body style={{ textAlign: 'center' }}>
             <p>Vui lòng quét QR để thanh toán</p>
-            <QRCodeCanvas value={`Payment for ${this.state.total} VND`} size={256} />
+            <img 
+              src="https://res.cloudinary.com/dhzlbonsg/image/upload/v1740711717/mazsv6idr4y4o7xegrmj.jpg" 
+              alt="QR Code" 
+              style={{ width: '256px', height: '256px' }}
+            />
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={() => this.setState({ showQR: false })}>Close</Button>
