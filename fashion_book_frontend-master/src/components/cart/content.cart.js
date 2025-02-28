@@ -148,8 +148,23 @@ class ContentCart extends Component {
               style={{ width: '256px', height: '256px' }}
             />
           </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={() => this.setState({ showQR: false })}>Close</Button>
+          <Modal.Footer style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem' }}>
+            <Button 
+              onClick={() => this.setState({ showQR: false })}
+              style={{ backgroundColor: '#E6E4DF', color: '#696763', width: '120px' }}
+            >
+              Close
+            </Button>
+            <Button 
+              onClick={() => {
+                this.setState({ showQR: false });
+                // After payment is confirmed, redirect to home
+                window.location.href = '/';
+              }}
+              style={{ backgroundColor: '#FE980F', color: 'white', width: '150px' }}
+            >
+              Đã thanh toán
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>
