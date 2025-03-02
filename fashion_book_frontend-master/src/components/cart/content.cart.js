@@ -8,6 +8,8 @@ class ContentCart extends Component {
     super();
     this.state = {
       total: 0,
+      subtotal: 0, // Add subtotal to track original price
+      discount: 0, // This will now be the actual amount in VND
       show: false,
       name: "",
       phone: "",
@@ -24,8 +26,17 @@ class ContentCart extends Component {
   
   componentWillReceiveProps(nextProps) {
     if (nextProps.cart !== this.props.cart) {
-      let total = nextProps.cart.reduce((sum, item) => sum + (Number(item.price) * Number(item.count)), 0);
-      this.setState({ total });
+      console.log("Cart Data:", nextProps.cart);
+      // Calculate all prices including discounts
+      let subtotal = nextProps.cart.reduce((sum, item) => sum + (Number(item.price) * Number(item.count)), 0);
+      let totalDiscount = nextProps.cart.reduce((sum, item) => 
+        sum + (Number(item.discount || 0) * Number(item.count)), 0);
+
+      this.setState({ 
+        subtotal: subtotal,
+        discount: totalDiscount,
+        total: subtotal - totalDiscount
+      });
     }
     if (nextProps.ispay !== this.props.ispay && nextProps.ispay === true) {
       this.setState({ ispay: true });
@@ -61,7 +72,7 @@ class ContentCart extends Component {
       return;
     }
 
-    // Call payment action
+    // Call payment action (fixed the typo here)
     this.props.payment(address, phone, name, this.state.total);
     this.setState({ showQR: false });
   };
@@ -93,18 +104,64 @@ class ContentCart extends Component {
                         <h4>{element.name}</h4>
                       </td>
                       <td className="cart_price">
-                        <p>{element.price}</p>
+                        <p className="original-price">{Number(element.price).toLocaleString()}<sup>đ</sup></p>
+                        {element.discount > 0 && (
+                          <p className="discounted-price" style={{color: '#FE980F'}}>
+                            {(Number(element.price) - Number(element.discount)).toLocaleString()}<sup>đ</sup>
+                          </p>
+                        )}
                       </td>
                       <td className="cart_quantity">
-                        <span onClick={() => this.props.updateProductInCart({...element, count: element.count + 1})}>+</span>
+                        <span onClick={() => this.props.updateProductInCart({
+                          ...element, 
+                          count: Math.min(element.count + 1, (element.bookItem && element.bookItem.count) || element.count)
+                        })}>+</span>
                         <input type="text" value={element.count} readOnly />
-                        <span onClick={() => this.props.updateProductInCart({...element, count: Math.max(1, element.count - 1)})}>-</span>
+                        <span onClick={() => this.props.updateProductInCart({
+                          ...element, 
+                          count: Math.max(1, element.count - 1)
+                        })}>-</span>
+                        {element.bookItem && element.bookItem.count && (
+                          <small style={{display: 'block', color: '#999'}}>
+                            Còn lại: {element.bookItem.count}
+                          </small>
+                        )}
                       </td>
                       <td className="cart_total">
-                        <p>{(element.price * element.count).toLocaleString()}<sup>đ</sup></p>
+                        {element.discount > 0 ? (
+                          <div>
+                            <p style={{ textDecoration: 'line-through', color: '#999' }}>
+                              {(element.price * element.count).toLocaleString()}<sup>đ</sup>
+                            </p>
+                            <p style={{ color: '#FE980F', fontWeight: 'bold' }}>
+                              {((element.price - element.discount) * element.count).toLocaleString()}<sup>đ</sup>
+                            </p>
+                          </div>
+                        ) : (
+                          <p>{(element.price * element.count).toLocaleString()}<sup>đ</sup></p>
+                        )}
                       </td>
                       <td className="cart_delete">
-                        <button onClick={() => this.props.deteleProductInCart(element._id)}>X</button>
+                        <button 
+                          onClick={() => this.props.deteleProductInCart(element._id)}
+                          style={{
+                            backgroundColor: '#FE980F',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: '25px',
+                            height: '25px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            padding: 0
+                          }}
+                        >
+                          ×
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -121,12 +178,26 @@ class ContentCart extends Component {
                 <div className="total_area">
                   <ul style={{ width: '100%', marginBottom: '20px' }}>
                     <li style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px', marginBottom: '10px' }}>
-                      <span>Phí Vận Chuyển</span>
+                      <span>Tổng tiền hàng</span>
+                      <span style={{ minWidth: '120px', textAlign: 'right' }}>
+                        {this.state.subtotal.toLocaleString()}<sup>đ</sup>
+                      </span>
+                    </li>
+                    <li style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px', marginBottom: '10px' }}>
+                      <span>Giảm giá</span>
+                      <span style={{ minWidth: '120px', textAlign: 'right', color: '#FE980F' }}>
+                        -{this.state.discount.toLocaleString()}<sup>đ</sup>
+                      </span>
+                    </li>
+                    <li style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px', marginBottom: '10px' }}>
+                      <span>Phí vận chuyển</span>
                       <span style={{ minWidth: '120px', textAlign: 'right' }}>0<sup>đ</sup></span>
                     </li>
                     <li style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>
-                      <span>Tổng Tiền</span>
-                      <span style={{ minWidth: '120px', textAlign: 'right' }}>{this.state.total.toLocaleString()}<sup>đ</sup></span>
+                      <span>Tổng thanh toán</span>
+                      <span style={{ minWidth: '120px', textAlign: 'right', color: '#FE980F', fontWeight: 'bold' }}>
+                        {Math.max(0, this.state.total).toLocaleString()}<sup>đ</sup>
+                      </span>
                     </li>
                   </ul>
                   <div style={{ 

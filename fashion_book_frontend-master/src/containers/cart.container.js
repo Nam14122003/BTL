@@ -29,7 +29,7 @@ class CartContainer extends Component {
         deteleProductInCart={(id_product) => this.props.cartActions.deteleProductInCart(id_product)}
       
         payment={( address, phone, name,total) => 
-          this.props.payment( address, phone, name,total)}
+          this.props.cartActions.payment( address, phone, name,total)}
         ispay={this.props.ispay}
       />
     );
@@ -46,8 +46,7 @@ const mapDispatchToProps = dispatch => {
     actions: bindActionCreators(userActions, dispatch),
     homeActions: bindActionCreators(homeActions, dispatch),
     productActions: bindActionCreators(productActions, dispatch),
-    cartActions: bindActionCreators(cartActions, dispatch),
-    payment: (address, phone, name, total) => dispatch(cartActions.payment(address, phone, name, total))
+    cartActions: bindActionCreators(cartActions, dispatch)
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CartContainer);
