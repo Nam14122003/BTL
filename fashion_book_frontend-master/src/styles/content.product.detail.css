@@ -1,0 +1,42 @@
+.price-display {
+  margin: 15px 0;
+}
+
+.price-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.original-price {
+  color: #999;
+  font-size: 14px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.discounted-price {
+  color: #FE980F;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.discount-badge {
+  background: #e53935;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.normal-price {
+  color: #FE980F;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+sup {
+  font-size: 12px;
+  top: -0.5em;
+}
