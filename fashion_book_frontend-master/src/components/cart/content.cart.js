@@ -26,7 +26,7 @@ class ContentCart extends Component {
   
   componentWillReceiveProps(nextProps) {
     if (nextProps.cart !== this.props.cart) {
-      console.log("Cart Data:", nextProps.cart);
+      
       // Calculate all prices including discounts
       let subtotal = nextProps.cart.reduce((sum, item) => sum + (Number(item.price) * Number(item.count)), 0);
       let totalDiscount = nextProps.cart.reduce((sum, item) => 
@@ -65,7 +65,6 @@ class ContentCart extends Component {
     if (!name || !phone || !address) {
       alert('Vui lòng điền đầy đủ thông tin');
       return;
-    }
 
     if (!this.isValidPhone(phone)) {
       alert('Số điện thoại không hợp lệ');
@@ -73,6 +72,7 @@ class ContentCart extends Component {
     }
 
     // Call payment action (fixed the typo here)
+    
     this.props.payment(address, phone, name, this.state.total);
     this.setState({ showQR: false });
   };

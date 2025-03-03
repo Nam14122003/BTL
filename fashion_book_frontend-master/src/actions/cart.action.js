@@ -61,6 +61,9 @@ export const deteleProductInCart = (id_product) => async(dispatch, getState) => 
     dispatch(getCart())
 }
 
+export const clearCart = () => ({
+    type: cartTypes.CLEAR_CART
+})
 
 export const paymentSuccess = () => ({
     type: cartTypes.PAYMENT_SUCCESS
@@ -71,13 +74,9 @@ export const paymentFail = () => ({
 export const resetPayment = () => ({
     type: cartTypes.RESET_PAYMENT
 })
-export const payment = ( address, phone, name,total) => async (dispatch, getState) => {
+export const payment = (address, phone, name, total) => async (dispatch, getState) => {
     let res = null
     try {
-        console.log(total);
-        console.log(address)
-        console.log(phone);
-        console.log(name)
         res = await axios.post('http://localhost:8080/bill/add', {
             id_user: storeConfig.getUser().id,
             address: address,
@@ -86,14 +85,25 @@ export const payment = ( address, phone, name,total) => async (dispatch, getStat
             total: total,
             email: storeConfig.getUser().email
         })
+        
+        if (res.data.success) {
+            // Clear cart in local storage
+            storeConfig.clearCart();
+            
+            // Clear cart in redux store
+            dispatch(clearCart());
+            dispatch(setCart([]));
+            
+            // Update payment status
+            dispatch(paymentSuccess());
+            dispatch(resetPayment());
+            return true;
+        }
     }
     catch(err) { 
-        dispatch(paymentFail())
-        console.log(err.response)
-        dispatch(resetPayment())
-        return
+        dispatch(paymentFail());
+        console.log(err.response);
+        dispatch(resetPayment());
+        return false;
     }
-    dispatch(paymentSuccess())
-    dispatch(resetPayment())
-    dispatch(getCart())
 }
