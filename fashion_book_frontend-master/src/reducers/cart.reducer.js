@@ -30,7 +30,8 @@ const cart = (state = { data: []}, action) => {
         case cartTypes.CLEAR_CART: {
             return {
                 ...state,
-                data: []
+                data: [],
+                ispay: null
             }
         }
         default: return state

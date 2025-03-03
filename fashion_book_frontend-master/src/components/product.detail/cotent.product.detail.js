@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import storeConfig from "../../config/storage.config";
 import { Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
 class ContentProductDetail extends Component {
   constructor(props) {
     super(props);
@@ -12,10 +13,11 @@ class ContentProductDetail extends Component {
       comment: "",
       quantity: 1,
       noti: false,
-      show:false,
+      show: false,
       pagination: []
     };
   }
+
   componentWillMount() {
     let tmp = [];
     for (let i = 1; i <= this.props.totalpage; i++) {
@@ -34,6 +36,7 @@ class ContentProductDetail extends Component {
       });
     }
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.totalpage !== this.props.totalpage) {
       let tmp = [];
@@ -49,6 +52,7 @@ class ContentProductDetail extends Component {
       });
     }
   }
+
   renderPagination() {
     if (this.state.pagination.length === 0) {
       return null;
@@ -83,11 +87,13 @@ class ContentProductDetail extends Component {
       );
     }
   }
+
   handlename = name => {
     if (this.state.name === "") {
       this.setState({ name: name });
     }
   };
+
   submitComment = () => {
     if (this.state.name === "") {
       this.setState({ notificationComment: "Name must not be blank " });
@@ -109,9 +115,10 @@ class ContentProductDetail extends Component {
     );
     this.setState({ comment: "" });
   };
+
   submitOrder = () => {
     if (this.state.quantity < 0) {
-      this.setState({ noti: false});
+      this.setState({ noti: false });
       return;
     } else {
       this.setState({ noti: true });
@@ -120,26 +127,27 @@ class ContentProductDetail extends Component {
     product.count = this.state.quantity;
     this.props.addToCart(product);
   };
+
   render() {
-    let xhtml='';
+    let xhtml = '';
     console.log(this.state.noti);
-    if(this.state.noti){
+    if (this.state.noti) {
       xhtml = <div className='aler-box'>
         <div className='btn-close ' onClick={() => this.setState({ noti: false })}>
           X
         </div>
-      <div className='aler-title'>
-        <h3 className='title'>Thông Tin Đơn Hàng</h3>
+        <div className='aler-title'>
+          <h3 className='title'>Thông Tin Đơn Hàng</h3>
+        </div>
+        <div className='aler-body'>Đặt Hàng thành công</div>
+        <div className='alert-footer'>
+          <button className="roduct-variation" onClick={() => this.setState({ noti: false })}>
+            Cancel
+          </button>
+        </div>
       </div>
-      <div className='aler-body'>Đặt Hàng thành công</div>
-      <div className='alert-footer'>
-        <button className="roduct-variation" onClick={() => this.setState({ noti: false })}>
-          Cancel
-          
-        </button>
-      </div>
-    </div>
     }
+
     return (
       <section>
         <div className="container">
@@ -160,7 +168,6 @@ class ContentProductDetail extends Component {
                     );
                   })}
                 </div>
-                
               </div>
             </div>
             <div className="col-sm-9 padding-right">
@@ -169,7 +176,6 @@ class ContentProductDetail extends Component {
                   <div className="view-product">
                     <img src={this.props.mproductDetail.img} alt="" />
                   </div>
-                 
                 </div>
                 <div className="col-sm-7">
                   <div className="product-information">
@@ -183,21 +189,39 @@ class ContentProductDetail extends Component {
                     <img src="images/product-details/rating.png" alt="" />
 
                     <span>
-                      <div>
-                        <span>Giá:</span>
-                        <span>{this.props.mproductDetail.price}</span>
-                        
+                      <div className="price-display">
+                        {this.props.mproductDetail.discount > 0 ? (
+                          <Fragment>
+                            <div className="price-wrapper">
+                              <span className="original-price">
+                                Giá gốc: <span style={{ textDecoration: 'line-through' }}>
+                                  {new Intl.NumberFormat('de-DE').format(this.props.mproductDetail.price)}<sup>đ</sup>
+                                </span>
+                              </span>
+                              <span className="discounted-price">
+                                Giá bán: {new Intl.NumberFormat('de-DE').format(this.props.mproductDetail.discount)}<sup>đ</sup>
+                              </span>
+                              <span className="discount-badge">
+                                -{Math.round(((this.props.mproductDetail.price - this.props.mproductDetail.discount) / this.props.mproductDetail.price) * 100)}%
+                              </span>
+                            </div>
+                          </Fragment>
+                        ) : (
+                          <span className="normal-price">
+                            Giá: {new Intl.NumberFormat('de-DE').format(this.props.mproductDetail.price)}<sup>đ</sup>
+                          </span>
+                        )}
                       </div>
                       <div className='count-product'>
                         <p className='count'>Số Lượng:</p>
                         <input
-                        type="number"
-                        min="0"
-                        onChange={e =>
-                          this.setState({ quantity: e.target.value })
-                        }
-                        value={this.state.quantity}
-                      />
+                          type="number"
+                          min="0"
+                          onChange={e =>
+                            this.setState({ quantity: e.target.value })
+                          }
+                          value={this.state.quantity}
+                        />
                       </div>
                       <button
                         onClick={() => this.submitOrder()}
@@ -224,7 +248,6 @@ class ContentProductDetail extends Component {
                     <p>
                       <b>Author:</b> {this.props.nameAuthor}
                     </p>
-                   
                   </div>
                   <Modal
                     show={this.state.show}
@@ -234,7 +257,7 @@ class ContentProductDetail extends Component {
                   >
                     <Modal.Header closeButton>
                       <Modal.Title id="contained-modal-title">
-                        showfication
+                        Showfication
                       </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>Đặt Hàng Thành Công</Modal.Body>
@@ -242,66 +265,58 @@ class ContentProductDetail extends Component {
                       <Button onClick={() => this.setState({ show: false })}>
                         <a>Cancel</a>
                       </Button>
-                      
                     </Modal.Footer>
                   </Modal>
                 </div>
                 {xhtml}
-               
-                  <div className="col-sm-12 review-product">
-                    <div>
-                      <h3>Review Sách</h3>
-                    </div>
-                   
+                <div className="col-sm-12 review-product">
+                  <div>
+                    <h3>Review Sách</h3>
                   </div>
-                  <div className="tab-content">
-
-                    <div className="tab-pane fade active in" id="reviews">
-                      <div className="col-sm-12">
-                        <div className="content-conment">
-                          {this.props.comment.map((element, index) => {
-                            return (
-                              <p>
-                                <span>{element.name}:</span> {element.comment}
-                              </p>
-                            );
-                          })}
-                          <div className='Pagination-flex'>
-                            {this.renderPagination()}
-                          </div>
-                         
+                </div>
+                <div className="tab-content">
+                  <div className="tab-pane fade active in" id="reviews">
+                    <div className="col-sm-12">
+                      <div className="content-conment">
+                        {this.props.comment.map((element, index) => {
+                          return (
+                            <p>
+                              <span>{element.name}:</span> {element.comment}
+                            </p>
+                          );
+                        })}
+                        <div className='Pagination-flex'>
+                          {this.renderPagination()}
                         </div>
-                        <hr />
-                        <p style={{ color: "#5BBCEC" }}>
-                          {this.state.notificationComment}
-                        </p>
-                        <p>
-                          <h4><b>Bình Luận</b></h4>
-                        </p>
-
-                        <form action="#">
-                        
-                          <textarea
-                            value={this.state.comment}
-                            onChange={e =>
-                              this.setState({ comment: e.target.value })
-                            }
-                          />
-                          <button
-                            type="button"
-                            className="btn btn-default pull-right"
-                            onClick={() => this.submitComment()}
-                          >
-                            Bình Luận
-                          </button>
-                        </form>
                       </div>
+                      <hr />
+                      <p style={{ color: "#5BBCEC" }}>
+                        {this.state.notificationComment}
+                      </p>
+                      <p>
+                        <h4><b>Bình Luận</b></h4>
+                      </p>
+                      <form action="#">
+                        <textarea
+                          value={this.state.comment}
+                          onChange={e =>
+                            this.setState({ comment: e.target.value })
+                          }
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-default pull-right"
+                          onClick={() => this.submitComment()}
+                        >
+                          Bình Luận
+                        </button>
+                      </form>
                     </div>
                   </div>
-             
+                </div>
+
                 <div className="recommended_items">
                   <h2 className="title text-center">recommended items</h2>
-
                   <div
                     id="recommended-item-carousel"
                     className="carousel slide"
@@ -317,7 +332,25 @@ class ContentProductDetail extends Component {
                                   <div className="productinfo text-center">
                                     <a href={"/product/" + element._id}>
                                       <img src={element.img} alt="" />
-                                      <h2>  {new Intl.NumberFormat('de-DE', {currency: 'EUR' }).format(element.price)}<sup>đ</sup></h2>
+                                      <div className="price-display">
+                                        {element.discount > 0 ? (
+                                          <Fragment>
+                                            <span className="original-price">
+                                              <span style={{ textDecoration: 'line-through' }}>
+                                                {new Intl.NumberFormat('de-DE').format(element.price)}<sup>đ</sup>
+                                              </span>
+                                            </span>
+                                            <span className="discounted-price">
+                                              {new Intl.NumberFormat('de-DE').format(element.discount)}<sup>đ</sup>
+                                            </span>
+                                            <span className="discount-badge">
+                                              -{Math.round(((element.price - element.discount) / element.price) * 100)}%
+                                            </span>
+                                          </Fragment>
+                                        ) : (
+                                          <h2>{new Intl.NumberFormat('de-DE').format(element.price)}<sup>đ</sup></h2>
+                                        )}
+                                      </div>
                                       <p>{element.describe}</p>{" "}
                                     </a>
                                     <button
@@ -359,9 +392,9 @@ class ContentProductDetail extends Component {
             </div>
           </div>
         </div>
-             
       </section>
     );
   }
 }
+
 export default ContentProductDetail;
