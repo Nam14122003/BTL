@@ -2,9 +2,9 @@
 var cloudinary = require("cloudinary").v2;
 var uploads = {};
 cloudinary.config({
-  cloud_name: "ilike",
-  api_key: "678772438397898",
-  api_secret: "zvdEWEfrF38a2dLOtVp-3BulMno",
+  cloud_name: "dhzlbonsg",
+  api_key: "877964519689296",
+  api_secret: "-v09TSvQlPeTre6q2bKQl381eYs",
 });
 
 const book = require("../models/book.model");
