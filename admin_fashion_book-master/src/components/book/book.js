@@ -99,22 +99,28 @@ class Book extends Component {
     reader.readAsDataURL(img);
   };
   invalidPrice = t => {
-    var str = t.toString();
-    let count = 0;
-    for (let i = 0; i < str.length; i++) {
-      if (str.charAt(i) == "+" || str.charAt(i) == "-") count++;
-      else break;
-    }
-    str = str.substring(count, str.length);
-    count = 0;
-    for (let i = 0; i < str.length; i++) {
-      if (str.charAt(i) == ".") {
-        count++;
+    if (!t || t === '') return true;
+    
+    try {
+      var str = t.toString();
+      let count = 0;
+      for (let i = 0; i < str.length; i++) {
+        if (str.charAt(i) == "+" || str.charAt(i) == "-") count++;
+        else break;
       }
-      if (str.charAt(i) < "0" || str.charAt(i) > "9") return false;
+      str = str.substring(count, str.length);
+      count = 0;
+      for (let i = 0; i < str.length; i++) {
+        if (str.charAt(i) == ".") {
+          count++;
+        }
+        if (str.charAt(i) < "0" || str.charAt(i) > "9") return false;
+      }
+      if (count > 1) return false;
+      return !isNaN(Number.parseFloat(str));
+    } catch(err) {
+      return false;
     }
-    if (count > 1) return false;
-    return !isNaN(Number.parseFloat(str));
   };
   submitAddBook = () => {
     const {
@@ -271,9 +277,9 @@ class Book extends Component {
         noti: ""
       });
     }
-    if (!this.invalidPrice(discount) && discount !== "") {
+    if (discount && !this.invalidPrice(discount)) {
       this.setState({
-        noti: "Discount invalid"
+        noti: "Discount must be a valid price amount"
       });
       return;
     } else {

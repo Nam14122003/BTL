@@ -16,6 +16,10 @@ const book = new Schema({
         type: Number,
         required: [true, "can't be blank"],
     },
+    discount: {
+        type: Number,
+        required: [true, "can't be blank"],
+    },
     release_date: {
         type: Date,
         $dateToString: { format: "%Y-%m-%d", date: "$date" },

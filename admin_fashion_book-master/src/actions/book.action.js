@@ -334,13 +334,14 @@ export const updateBookSuccess = () => ({
 export const updateBookFail = () => ({
     type: bookTypes.UPDATE_BOOK_FAIL
 })
-export const addBook = (id_category, name, price, release_date, describe, id_nsx, id_author, file) =>
+export const addBook = (id_category, name, price, release_date, describe, id_nsx, id_author, file, discount) =>
  async (dispatch, getState) => {
     let data = new FormData()
     data.append('file', file)
     data.append('id_category', id_category) 
     data.append('name', name) 
     data.append('price', price)  
+    data.append('discount', discount)  
     data.append('release_date', release_date)
     data.append('describe', describe)
     data.append('id_nsx', id_nsx)
@@ -356,13 +357,14 @@ export const addBook = (id_category, name, price, release_date, describe, id_nsx
     dispatch(addBookSuccess())
     dispatch(getBook())
 }
-export const updateBook = (id, name, id_category, price, release_date, describe, id_nsx, id_author, file) => async (dispatch, getState) => {
+export const updateBook = (id, name, id_category, price, release_date, describe, id_nsx, id_author, file, discount) => async (dispatch, getState) => {
     let data = new FormData()
     data.append('file', file)
     data.append('id', id)
     data.append('id_category', id_category) 
     data.append('name', name) 
     data.append('price', price)  
+    data.append('discount', discount)  
     data.append('release_date', release_date)
     data.append('describe', describe)
     data.append('id_nsx', id_nsx)

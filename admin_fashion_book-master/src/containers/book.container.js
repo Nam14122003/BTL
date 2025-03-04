@@ -52,7 +52,8 @@ class BookContainer extends Component {
             describe,
             id_nsx,
             id_author,
-            file
+            file,
+            discount
           ) =>
             this.props.bookActions.addBook(
               id_category,
@@ -62,7 +63,8 @@ class BookContainer extends Component {
               describe,
               id_nsx,
               id_author,
-              file
+              file,
+              discount
             )
           }
           updateBook={(
@@ -74,7 +76,8 @@ class BookContainer extends Component {
             describe,
             id_nsx,
             id_author,
-            file
+            file,
+            discount
           ) =>
             this.props.bookActions.updateBook(
               id,
@@ -85,7 +88,8 @@ class BookContainer extends Component {
               describe,
               id_nsx,
               id_author,
-              file
+              file,
+              discount
             )
           }
         />
