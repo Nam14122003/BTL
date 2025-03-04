@@ -513,7 +513,8 @@ class Book extends Component {
                       <i className="icon_mail_alt" /> Price
                     </th>
                     <th>
-                      <i className="icon_pin_alt" /> Discount
+                      <i className="icon_pin_alt" /> Price After Discount
+
                     </th>
                     <th>
                       <i className="icon_pin_alt" /> describe

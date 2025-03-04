@@ -65,14 +65,14 @@ class ContentCart extends Component {
     if (!name || !phone || !address) {
       alert('Vui lòng điền đầy đủ thông tin');
       return;
+    }  // Thêm dấu đóng ngoặc nhọn này
 
     if (!this.isValidPhone(phone)) {
       alert('Số điện thoại không hợp lệ');
       return;
     }
 
-    // Call payment action (fixed the typo here)
-    
+    // Call payment action
     this.props.payment(address, phone, name, this.state.total);
     this.setState({ showQR: false });
   };
