@@ -33,6 +33,7 @@ exports.addBook = async (req, res) => {
     typeof req.body.price === "undefined" ||
     typeof req.body.release_date === "undefined" ||
     typeof req.body.describe === "undefined" ||
+    typeof req.body.discount === "undefined" ||
     typeof req.body.id_nsx === "undefined" ||
     typeof req.body.id_author === "undefined"
   ) {
@@ -43,6 +44,7 @@ exports.addBook = async (req, res) => {
     id_category,
     name,
     price,
+    discount,
     release_date,
     describe,
     id_nsx,
@@ -57,6 +59,7 @@ exports.addBook = async (req, res) => {
     id_category: id_category,
     name: name,
     price: price,
+    discount:  discount,
     release_date: release_date,
     img: urlImg,
     describe: describe,
@@ -81,12 +84,13 @@ exports.updateBook = async (req, res) => {
     typeof req.body.id_category === "undefined" ||
     typeof req.body.price === "undefined" ||
     typeof req.body.release_date === "undefined" ||
+    typeof req.body.discount === "undefined" ||
     typeof req.body.describe === "undefined"
   ) {
     res.status(422).json({ msg: "Invalid data" });
     return;
   }
-  let { name, id, id_category, price, release_date, describe, category } =
+  let { name, id, id_category, price, discount, release_date, describe, category } =
     req.body;
   let bookFind;
   try {
@@ -115,6 +119,7 @@ exports.updateBook = async (req, res) => {
   bookFind.id_category = id_category;
   bookFind.name = name;
   bookFind.price = parseFloat(price);
+  bookFind.discount = parseFloat(discount);
   bookFind.release_date = release_date;
   bookFind.describe = describe;
   bookFind.category = category;
