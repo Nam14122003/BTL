@@ -10,7 +10,7 @@ const ProductItem = ({ urlImg, price, name, id, book }) => (
                     <Link to={'/product/' + id}><img src={urlImg} alt="" className="product-image" /></Link>
                     <h4 className="name-product">{name}</h4>
                     <div className="product-content">
-                        {book.discount > 0 ? (
+                        {book.discount > 0 && book.discount !== price ? (
                             <Fragment>
                                 <div className="price-wrapper">
                                     <span className="original-price">

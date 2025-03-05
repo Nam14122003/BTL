@@ -190,7 +190,7 @@ class ContentProductDetail extends Component {
 
                     <span>
                       <div className="price-display">
-                        {this.props.mproductDetail.discount > 0 ? (
+                        {this.props.mproductDetail.discount > 0 && this.props.mproductDetail.discount !== this.props.mproductDetail.price ? (
                           <Fragment>
                             <div className="price-wrapper">
                               <span className="original-price">
@@ -336,7 +336,7 @@ class ContentProductDetail extends Component {
                                     <a href={"/product/" + element._id}>
                                       <img src={element.img} alt="" />
                                       <div className="price-display">
-                                        {element.discount > 0 ? (
+                                        {element.discount > 0 && element.discount !== element.price ? (
                                           <Fragment>
                                             <span className="original-price">
                                               <span style={{ textDecoration: 'line-through' }}>
