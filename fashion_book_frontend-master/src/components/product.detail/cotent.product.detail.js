@@ -248,6 +248,9 @@ class ContentProductDetail extends Component {
                     <p>
                       <b>Author:</b> {this.props.nameAuthor}
                     </p>
+                    <p>
+                      <b>Mô tả:</b> {this.props.mproductDetail.describe}
+                    </p>
                   </div>
                   <Modal
                     show={this.state.show}
