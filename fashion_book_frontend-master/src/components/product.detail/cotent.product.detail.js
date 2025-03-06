@@ -128,6 +128,16 @@ class ContentProductDetail extends Component {
     this.props.addToCart(product);
   };
 
+  handleBuyNow = () => {
+    if (this.state.quantity < 0) {
+      return;
+    }
+    let product = this.props.mproductDetail;
+    product.count = this.state.quantity;
+    this.props.addToCart(product);
+    window.location.href = '/cart'; // Chuyển đến trang giỏ hàng
+  };
+
   render() {
     let xhtml = '';
     console.log(this.state.noti);
@@ -223,14 +233,25 @@ class ContentProductDetail extends Component {
                           value={this.state.quantity}
                         />
                       </div>
-                      <button
-                        onClick={() => this.submitOrder()}
-                        type="button"
-                        className="btn btn-default cart"
-                      >
-                        <i className="fa fa-shopping-cart" />
-                        Add to cart
-                      </button>
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <button
+                          onClick={() => this.submitOrder()}
+                          type="button"
+                          className="btn btn-default cart"
+                        >
+                          <i className="fa fa-shopping-cart" />
+                          Add to cart
+                        </button>
+                        {/* Nút Mua ngay với style giống Add to cart */}
+                        <button
+                          onClick={() => this.handleBuyNow()}
+                          type="button"
+                          className="btn btn-default cart"
+                        >
+                          <i className="fa fa-shopping-cart" />
+                          Mua ngay
+                        </button>
+                      </div>
                     </span>
                     <p>{this.state.noti}</p>
                     <p>
