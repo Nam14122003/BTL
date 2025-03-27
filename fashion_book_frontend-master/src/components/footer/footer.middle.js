@@ -10,19 +10,19 @@ const FooterMiddle = () => (
             <ul className="nav nav-pills nav-stacked ">
               <li>
                 <i className="fas fa-map-marker-alt"></i>
-                <a href="#">Bắc Ninh City</a>
+                <a href="#">Hà Nội City</a>
               </li>
               <li>
                 <i className="far fa-envelope"></i>
-                <a href="#">cao0suy@gmail.com</a>
+                <a href="#">ledoanngocn@gmail.com</a>
               </li>
               <li>
                 <i className="fas fa-phone-volume"></i>
-                <a href="#">+84 888 866 66</a>
+                <a href="#">+84 37 212 2003</a>
               </li>
               <li>
                 <i class="fab fa-facebook-f"></i>
-                <a href="#">cao0suy</a>
+                <a href="https://www.facebook.com/ledoanngocn">Lê Nam</a>
               </li>
             </ul>
           </div>
@@ -32,23 +32,23 @@ const FooterMiddle = () => (
             <h2>Sách Về Kỹ Năng</h2>
             <ul className="nav nav-pills nav-stacked">
               <li>
-                <i className="fas fa-book"></i>
+                <i className="fas fa-long-arrow-alt-right"></i>
                 <a href="#">Facebook marketing</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
+                <i className="fas fa-long-arrow-alt-right"></i>
                 <a href="#">Đắc Nhân Tâm</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
+                <i className="fas fa-long-arrow-alt-right"></i>
                 <a href="#">Nhà Giả Kim</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
+                <i className="fas fa-long-arrow-alt-right"></i>
                 <a href="#">1000 Câu Hỏi Vì Sao</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
+                <i className="fas fa-long-arrow-alt-right"></i>
                 <a href="#">Cuộc Sống An Nhàn</a>
               </li>
             </ul>
@@ -59,56 +59,56 @@ const FooterMiddle = () => (
             <h2>Sách Giáo Khoa</h2>
             <ul className="nav nav-pills nav-stacked">
               <li>
-                <i className="fas fa-book"></i>
-                <a href="#">Tiếng Anh</a>
+                <i className="fas fa-long-arrow-alt-right"></i>
+                <a href="#">Tiếng Anh Lớp 12</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
-                <a href="#">Toán</a>
+                <i className="fas fa-long-arrow-alt-right"></i>
+                <a href="#">Toán Lớp 12</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
-                <a href="#">Hóa Học</a>
+                <i className="fas fa-long-arrow-alt-right"></i>
+                <a href="#">Tiếng Việt Lớp 12</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
-                <a href="#">Tiếng Em</a>
+                <i className="fas fa-long-arrow-alt-right"></i>
+                <a href="#">Toán Học Lớp 12</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
-                <a href="#">Vật Lý</a>
+                <i className="fas fa-long-arrow-alt-right"></i>
+                <a href="#">Vật Lý Lớp 12</a>
               </li>
             </ul>
           </div>
         </div>
         <div className="col-sm-3">
           <div className="single-widget">
-            <h2>Truyện tranh</h2>
+            <h2>Sách Giải Trí</h2>
             <ul className="nav nav-pills nav-stacked">
               <li>
-                <i className="fas fa-book"></i>
+                <i className="fas fa-long-arrow-alt-right"></i>
                 <a href="#">Doraemon</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
+                <i className="fas fa-long-arrow-alt-right"></i>
                 <a href="#">Conan</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
+                <i className="fas fa-long-arrow-alt-right"></i>
                 <a href="#">Cuộc Phiêu Lưu Của Dế Mèn</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
-                <a href="#">Bảy viên ngọc rồng</a>
+                <i className="fas fa-long-arrow-alt-right"></i>
+                <a href="#">Cuộc Tấn Công Của Titan</a>
               </li>
               <li>
-                <i className="fas fa-book"></i>
-                <a href="#">Attack on titan</a>
+                <i className="fas fa-long-arrow-alt-right"></i>
+                <a href="#">Thỏ Và Rùa</a>
               </li>
             </ul>
           </div>
         </div>
-        <div className="col-sm-6">
+        <div>
           <div className="single-widget">
             <h2>About Shopper</h2>
             <form action="#" className="form-footer container">
@@ -117,17 +117,16 @@ const FooterMiddle = () => (
                   type="text"
                   placeholder="Your email address"
                   className="col-sm-4"
+                  style={{ padding: "10px" }}
                 />
-                <button type="submit" className="">
-                  <i className="fa fa-arrow-circle-o-right col-sm-2"></i>Submit
+                <button type="submit" style={{ padding: "10px" }}>
+                  Submit
                 </button>
               </div>
             </form>
-            <p>
-              Đăng Ký Gmail để nhận
-              <br />
-              những thống báo mới nhất về chúng tôi...
-            </p>
+          </div>
+          <div style={{ textAlign: "center", color: "white" }}>
+            @Copyright 2024
           </div>
         </div>
       </div>

@@ -191,7 +191,7 @@ class ContentHome extends Component {
                           name="optradio"
                           checked={this.state.check_5}
                         />{" "}
-                        Trên 150.000đ
+                        >= 150.000
                       </label>
                     </div>
 
@@ -240,6 +240,7 @@ class ContentHome extends Component {
                       book={element}
                       urlImg={element.img}
                       price={element.price}
+                      discountPrice={element.discount_price}
                       describe={element.describe}
                       id={element._id}
                       name={element.name}

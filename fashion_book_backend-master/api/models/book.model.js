@@ -52,6 +52,55 @@ const book = new Schema({
       validator: Number.isInteger,
       message: "{VALUE} is not an integer value",
     },
+
+    price: {
+        type: Number,
+        required: [true, "can't be blank"],
+    },
+    discount: {
+        type: Number,
+        required: [true, "can't be blank"],
+    },
+    release_date: {
+        type: Date,
+        $dateToString: { format: "%Y-%m-%d", date: "$date" },
+        default: new Date()
+    },
+    img: {
+        type: String,
+        required: [true, "can't be blank"],
+    },
+    describe: {
+        type: String,
+        default: "",
+    },
+    id_nsx: {
+        type: String,
+        required: [true, "can't be blank"],
+    },
+    id_author: {
+        type: String,
+        required: [true, "can't be blank"],
+    },
+    view_counts: {
+        type:Number,
+        default: 0, 
+        validate : {
+            validator : Number.isInteger,
+            message   : '{VALUE} is not an integer value'
+          }
+    },
+    sales: {
+        type: Number,
+        default: 0,
+        validate : {
+            validator : Number.isInteger,
+            message   : '{VALUE} is not an integer value'
+        }
+    }
+    discount: {
+      type: Number,
+      required: [true, "can't be blank"],
   },
 });
 module.exports = mongoose.model("book", book);

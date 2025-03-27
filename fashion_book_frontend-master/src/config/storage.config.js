@@ -1,4 +1,3 @@
-
 exports.setToken = (token) => {
     localStorage.setItem('token', token)
 }
@@ -78,4 +77,8 @@ exports.deteleProductInCart = (id_product) => {
     }
     localStorage.setItem('cart', JSON.stringify(cart))
     return true
+}
+
+exports.clearCart = () => {
+    localStorage.removeItem('cart');
 }

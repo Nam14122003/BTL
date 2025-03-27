@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import storeConfig from "../../config/storage.config";
 import { Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
 class ContentProductDetail extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +17,7 @@ class ContentProductDetail extends Component {
       pagination: [],
     };
   }
+
   componentWillMount() {
     let tmp = [];
     for (let i = 1; i <= this.props.totalpage; i++) {
@@ -34,6 +36,7 @@ class ContentProductDetail extends Component {
       });
     }
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.totalpage !== this.props.totalpage) {
       let tmp = [];
@@ -49,6 +52,7 @@ class ContentProductDetail extends Component {
       });
     }
   }
+
   renderPagination() {
     if (this.state.pagination.length === 0) {
       return null;
@@ -88,6 +92,7 @@ class ContentProductDetail extends Component {
       this.setState({ name: name });
     }
   };
+
   submitComment = () => {
     if (this.state.name === "") {
       this.setState({ notificationComment: "Name must not be blank " });
@@ -109,6 +114,7 @@ class ContentProductDetail extends Component {
     );
     this.setState({ comment: "" });
   };
+
   submitOrder = () => {
     if (this.state.quantity < 0) {
       this.setState({ noti: false });
@@ -120,6 +126,17 @@ class ContentProductDetail extends Component {
     product.count = this.state.quantity;
     this.props.addToCart(product);
   };
+
+  handleBuyNow = () => {
+    if (this.state.quantity < 0) {
+      return;
+    }
+    let product = this.props.mproductDetail;
+    product.count = this.state.quantity;
+    this.props.addToCart(product);
+    window.location.href = "/cart"; // Chuyển đến trang giỏ hàng
+  };
+
   render() {
     let xhtml = "";
     console.log(this.state.noti);
@@ -147,6 +164,7 @@ class ContentProductDetail extends Component {
         </div>
       );
     }
+
     return (
       <section>
         <div className="container">
@@ -206,14 +224,6 @@ class ContentProductDetail extends Component {
                           value={this.state.quantity}
                         />
                       </div>
-                      <button
-                        onClick={() => this.submitOrder()}
-                        type="button"
-                        className="btn btn-default cart"
-                      >
-                        <i className="fa fa-shopping-cart" />
-                        Add to cart
-                      </button>
                     </span>
                     <p>{this.state.noti}</p>
                     <p>
@@ -240,7 +250,7 @@ class ContentProductDetail extends Component {
                   >
                     <Modal.Header closeButton>
                       <Modal.Title id="contained-modal-title">
-                        showfication
+                        Showfication
                       </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>Đặt Hàng Thành Công</Modal.Body>
@@ -252,7 +262,6 @@ class ContentProductDetail extends Component {
                   </Modal>
                 </div>
                 {xhtml}
-
                 <div className="col-sm-12 review-product">
                   <div>
                     <h3>Review Sách</h3>
@@ -304,7 +313,6 @@ class ContentProductDetail extends Component {
 
                 <div className="recommended_items">
                   <h2 className="title text-center">recommended items</h2>
-
                   <div
                     id="recommended-item-carousel"
                     className="carousel slide"
@@ -372,4 +380,5 @@ class ContentProductDetail extends Component {
     );
   }
 }
+
 export default ContentProductDetail;

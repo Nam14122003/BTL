@@ -4,15 +4,15 @@ const FooterTop = () => (
   <div className="footer-top">
     <div className="container">
       <div className="row">
-        <div className="col-sm-3">
-          <div className="companyinfo">
+        <div>
+          <div className="companyinfo" style={{ textAlign: "center" }}>
             <h2>
               <span>BookShop</span>
             </h2>
             <p>
               Bookshop là một website chuyên bán sách, bao gồm nhiều thể loại đa
               dạng và phong phú , chúng tôi muốn cung cấp các trải nhiệm tuyệt
-              vời nhất đến khách hàng
+              vời nhất đên khách hàng
             </p>
           </div>
         </div>

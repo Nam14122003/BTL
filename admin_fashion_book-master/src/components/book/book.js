@@ -21,7 +21,8 @@ class Book extends Component {
       id_author: "",
       id_category: "",
       noti: "",
-      id: null
+      id: null,
+      discount: ""
     };
   }
   componentWillMount() {
@@ -98,34 +99,44 @@ class Book extends Component {
     reader.readAsDataURL(img);
   };
   invalidPrice = t => {
-    var str = t.toString();
-    let count = 0;
-    for (let i = 0; i < str.length; i++) {
-      if (str.charAt(i) == "+" || str.charAt(i) == "-") count++;
-      else break;
-    }
-    str = str.substring(count, str.length);
-    count = 0;
-    for (let i = 0; i < str.length; i++) {
-      if (str.charAt(i) == ".") {
-        count++;
+    if (!t || t === '') return true;
+    
+    try {
+      var str = t.toString();
+      let count = 0;
+      for (let i = 0; i < str.length; i++) {
+        if (str.charAt(i) == "+" || str.charAt(i) == "-") count++;
+        else break;
       }
-      if (str.charAt(i) < "0" || str.charAt(i) > "9") return false;
+      str = str.substring(count, str.length);
+      count = 0;
+      for (let i = 0; i < str.length; i++) {
+        if (str.charAt(i) == ".") {
+          count++;
+        }
+        if (str.charAt(i) < "0" || str.charAt(i) > "9") return false;
+      }
+      if (count > 1) return false;
+      return !isNaN(Number.parseFloat(str));
+    } catch(err) {
+      return false;
     }
-    if (count > 1) return false;
-    return !isNaN(Number.parseFloat(str));
   };
   submitAddBook = () => {
     const {
       id_category,
       name,
       price,
+      discount,
       release_date,
       describe,
       id_nsx,
       id_author,
       file
     } = this.state;
+    console.log('Submitting add book with data:', { 
+      id_category, name, price, discount, release_date, describe, id_nsx, id_author 
+    });
     if (name.length <= 0) {
       this.setState({
         noti: "Name invalid"
@@ -149,6 +160,16 @@ class Book extends Component {
     if (!this.invalidPrice(price)) {
       this.setState({
         noti: "Price invalid"
+      });
+      return;
+    } else {
+      this.setState({
+        noti: ""
+      });
+    }
+    if (!this.invalidPrice(discount) && discount !== "") {
+      this.setState({
+        noti: "Discount invalid"
       });
       return;
     } else {
@@ -205,7 +226,8 @@ class Book extends Component {
       describe,
       id_nsx,
       id_author,
-      file
+      file,
+      discount
     );
   };
   submitUpdateBook = () => {
@@ -213,6 +235,7 @@ class Book extends Component {
       id_category,
       name,
       price,
+      discount,
       release_date,
       describe,
       id_nsx,
@@ -221,6 +244,9 @@ class Book extends Component {
       id, 
       img
     } = this.state;
+    console.log('Submitting update book with data:', {
+      id, name, id_category, price, discount, release_date, describe, id_nsx, id_author
+    });
     if (name.length <= 0) {
       this.setState({
         noti: "Name invalid"
@@ -244,6 +270,16 @@ class Book extends Component {
     if (!this.invalidPrice(price)) {
       this.setState({
         noti: "Price invalid"
+      });
+      return;
+    } else {
+      this.setState({
+        noti: ""
+      });
+    }
+    if (discount && !this.invalidPrice(discount)) {
+      this.setState({
+        noti: "Discount must be a valid price amount"
       });
       return;
     } else {
@@ -301,7 +337,8 @@ class Book extends Component {
       describe,
       id_nsx,
       id_author,
-      file
+      file,
+      discount
     );
   };
   renderBtnSubmit = () => {
@@ -362,7 +399,8 @@ class Book extends Component {
         id_author: "",
         id_category: "",
         noti: "",
-        id: null
+        id: null,
+        discount: ""
     })
   }
   renderMenuCategory = () => {
@@ -475,6 +513,10 @@ class Book extends Component {
                       <i className="icon_mail_alt" /> Price
                     </th>
                     <th>
+                      <i className="icon_pin_alt" /> Price After Discount
+
+                    </th>
+                    <th>
                       <i className="icon_pin_alt" /> describe
                     </th>
                     <th>
@@ -487,6 +529,7 @@ class Book extends Component {
                         <td>{element.name}</td>
                         <td>{element.release_date.slice(0,10)}</td>
                         <td>{element.price}</td>
+                        <td>{element.discount}</td>
                         <td style={{ width: "40%" }}>{element.describe}</td>
                         <td>
                           <div className="btn-group">
@@ -500,6 +543,7 @@ class Book extends Component {
                                     10
                                   ),
                                   price: element.price,
+                                  discount: element.discount,
                                   describe: element.describe,
                                   category: this.getNameCategoryByID(
                                     element.id_category
@@ -607,6 +651,26 @@ class Book extends Component {
                           id="curl"
                           type="text"
                           name="url"
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group ">
+                      <label for="discount" className="control-label col-lg-2">
+                        Discount
+                      </label>
+                      <div className="col-lg-10">
+                        <input
+                          value={this.state.discount}
+                          onChange={e =>
+                            this.setState({
+                              discount: e.target.value
+                            })
+                          }
+                          className="form-control "
+                          id="discount"
+                          type="text"
+                          name="discount"
+                          placeholder="Enter discount amount"
                         />
                       </div>
                     </div>
