@@ -20,34 +20,61 @@ class ContentCart extends Component {
       ispay: false,
       showpaymentfail: false,
       showQR: false,
+      selectedItems: {},
+      selectAll: false,
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.cart !== this.props.cart) {
-      // Calculate all prices including discounts
-      let subtotal = nextProps.cart.reduce(
-        (sum, item) => sum + Number(item.price) * Number(item.count),
-        0
-      );
-      let totalDiscount = nextProps.cart.reduce(
-        (sum, item) => sum + Number(item.discount || 0) * Number(item.count),
-        0
-      );
-
-      this.setState({
-        subtotal: subtotal,
-        discount: totalDiscount,
-        total: subtotal - totalDiscount,
+      const selectedItems = {};
+      nextProps.cart.forEach((item) => {
+        selectedItems[item._id] = this.state.selectedItems[item._id] || false;
       });
-    }
-    if (nextProps.ispay !== this.props.ispay && nextProps.ispay === true) {
-      this.setState({ ispay: true });
-    }
-    if (nextProps.ispay !== this.props.ispay && nextProps.ispay === false) {
-      this.setState({ showpaymentfail: true });
+      this.setState({ selectedItems }, this.calculateTotals);
     }
   }
+  handleCheckboxChange = (index) => {
+    this.setState((prevState) => {
+      const selectedItems = {
+        ...prevState.selectedItems,
+        [index]: !prevState.selectedItems[index],
+      };
+      return {
+        selectedItems,
+        total: this.calculateTotal(selectedItems),
+        selectAll:
+          Object.keys(selectedItems).length === this.props.cart.length &&
+          Object.values(selectedItems).every(Boolean),
+      };
+    });
+  };
+
+  handleSelectAll = () => {
+    this.setState((prevState) => {
+      const newSelectAll = !prevState.selectAll;
+      const selectedItems = newSelectAll
+        ? Object.fromEntries(this.props.cart.map((_, i) => [i, true]))
+        : {};
+      return {
+        selectedItems,
+        selectAll: newSelectAll,
+        total: this.calculateTotal(selectedItems),
+      };
+    });
+  };
+
+  calculateTotal = (selectedItems) => {
+    return this.props.cart.reduce((sum, item, index) => {
+      if (selectedItems[index]) {
+        return (
+          sum +
+          (Number(item.price) - Number(item.discount || 0)) * Number(item.count)
+        );
+      }
+      return sum;
+    }, 0);
+  };
 
   handlePayment = () => {
     if (!this.props.islogin) {
@@ -89,6 +116,13 @@ class ContentCart extends Component {
               <table className="table table-condensed">
                 <thead>
                   <tr className="cart_menu">
+                    <td className="checkbox-content">
+                      <input
+                        type="checkbox"
+                        checked={this.state.selectAll}
+                        onChange={this.handleSelectAll}
+                      />
+                    </td>
                     <td className="image">Item</td>
                     <td className="description" />
                     <td className="price">Price</td>
@@ -100,6 +134,13 @@ class ContentCart extends Component {
                 <tbody>
                   {this.props.cart.map((element, index) => (
                     <tr key={index}>
+                      <td className="checkbox-content">
+                        <input
+                          type="checkbox"
+                          checked={!!this.state.selectedItems[index]}
+                          onChange={() => this.handleCheckboxChange(index)}
+                        />
+                      </td>
                       <td className="cart_product">
                         <img src={element.img} alt="" />
                       </td>
@@ -124,37 +165,88 @@ class ContentCart extends Component {
                         )}
                       </td>
                       <td className="cart_quantity">
-                        <span
+                        <button
                           onClick={() =>
                             this.props.updateProductInCart({
                               ...element,
-                              count: Math.min(
-                                element.count + 1,
-                                (element.bookItem && element.bookItem.count) ||
-                                  element.count
-                              ),
+                              count: element.count + 1, // Tăng số lượng
                             })
                           }
+                          disabled={
+                            element.bookItem &&
+                            element.count >= element.bookItem.count
+                          }
+                          style={{
+                            backgroundColor: "#FE980F",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "50%",
+                            width: "25px",
+                            height: "25px",
+                            fontSize: "14px",
+                            cursor: "pointer",
+                          }}
                         >
                           +
-                        </span>
-                        <input type="text" value={element.count} readOnly />
-                        <span
+                        </button>
+
+                        <input
+                          type="number"
+                          value={element.count}
+                          min="1"
+                          max={element.bookItem ? element.bookItem.count : ""}
+                          onChange={(e) => {
+                            const newValue = e.target.value;
+                            if (/^\d*$/.test(newValue)) {
+                              // Chỉ cho phép số nguyên dương
+                              this.props.updateProductInCart({
+                                ...element,
+                                count:
+                                  newValue === "" ? "" : parseInt(newValue, 10),
+                              });
+                            }
+                          }}
+                          onBlur={(e) => {
+                            let newCount = parseInt(e.target.value, 10);
+                            if (isNaN(newCount) || newCount < 1) {
+                              newCount = 1;
+                            } else if (element.bookItem) {
+                              newCount = Math.min(
+                                newCount,
+                                element.bookItem.count
+                              );
+                            }
+                            this.props.updateProductInCart({
+                              ...element,
+                              count: newCount,
+                            });
+                          }}
+                          style={{ width: "60px", textAlign: "center" }}
+                        />
+
+                        <button
                           onClick={() =>
                             this.props.updateProductInCart({
                               ...element,
-                              count: Math.max(1, element.count - 1),
+                              count: Math.max(1, element.count - 1), // Giảm số lượng, tối thiểu là 1
                             })
                           }
+                          disabled={element.count <= 1}
+                          style={{
+                            backgroundColor: "#FE980F",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "50%",
+                            width: "25px",
+                            height: "25px",
+                            fontSize: "14px",
+                            cursor: "pointer",
+                          }}
                         >
                           -
-                        </span>
-                        {element.bookItem && element.bookItem.count && (
-                          <small style={{ display: "block", color: "#999" }}>
-                            Còn lại: {element.bookItem.count}
-                          </small>
-                        )}
+                        </button>
                       </td>
+
                       <td className="cart_total">
                         {element.discount > 0 ? (
                           <div>
@@ -230,7 +322,7 @@ class ContentCart extends Component {
                     >
                       <span>Tổng tiền hàng</span>
                       <span style={{ minWidth: "120px", textAlign: "right" }}>
-                        {this.state.subtotal.toLocaleString()}
+                        {Math.max(0, this.state.total).toLocaleString()}
                         <sup>đ</sup>
                       </span>
                     </li>
@@ -297,14 +389,14 @@ class ContentCart extends Component {
                     }}
                   >
                     <Button
-                      className="btn btn-default"
+                      className="btn payment"
                       onClick={this.handlePayment}
                       style={{ backgroundColor: "#FE980F", color: "white" }}
                     >
                       Payment
                     </Button>
                     <Link
-                      className="btn btn-default"
+                      className="btn payment"
                       to={"/"}
                       style={{
                         backgroundColor: "#E6E4DF",

@@ -14,26 +14,26 @@ class Cart extends Component {
     return (
       <div>
         <header id="header">
-          <HeaderTop />
           <HeaderMiddle
             islogin={this.props.islogin}
             logout={() => this.props.logout()}
             history={this.props.history}
-          />
-          <HeaderBottom
             searchTextSubmit={() => this.props.searchTextSubmit()}
-            setSearchText={value => this.props.setSearchText(value)}
+            setSearchText={(value) => this.props.setSearchText(value)}
           />
         </header>
         <ContentCart
           islogin={this.props.islogin}
           cart={this.props.cart}
-          updateProductInCart={product =>
+          updateProductInCart={(product) =>
             this.props.updateProductInCart(product)
           }
-          deteleProductInCart={(id_product) => this.props.deteleProductInCart(id_product)}
-          payment={( address, phone, name,total) => 
-            this.props.payment( address, phone, name,total)}
+          deteleProductInCart={(id_product) =>
+            this.props.deteleProductInCart(id_product)
+          }
+          payment={(address, phone, name, total) =>
+            this.props.payment(address, phone, name, total)
+          }
           ispay={this.props.ispay}
           history={this.props.history}
         />

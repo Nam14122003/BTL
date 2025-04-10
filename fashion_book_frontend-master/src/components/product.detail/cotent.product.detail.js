@@ -17,7 +17,18 @@ class ContentProductDetail extends Component {
       pagination: [],
     };
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.nameCategory !== this.props.nameCategory) {
+      this.fetchRelatedBooks();
+    }
+  }
 
+  handleAddToCart = () => {
+    const { addToCart } = this.props;
+    let product = this.props.mproductDetail;
+    product.count = this.state.quantity;
+    addToCart(product);
+  };
   componentWillMount() {
     let tmp = [];
     for (let i = 1; i <= this.props.totalpage; i++) {
@@ -87,6 +98,7 @@ class ContentProductDetail extends Component {
       );
     }
   }
+
   handlename = (name) => {
     if (this.state.name === "") {
       this.setState({ name: name });
@@ -201,17 +213,60 @@ class ContentProductDetail extends Component {
                       className="newarrival"
                       alt=""
                     />
-                    <h2>{this.props.mproductDetail.name}</h2>
+                    <div className="sale-content">
+                      <span className="discount-badge">
+                        -
+                        {Math.round(
+                          ((this.props.mproductDetail.price -
+                            this.props.mproductDetail.discount) /
+                            this.props.mproductDetail.price) *
+                            100
+                        )}
+                        %
+                      </span>
+                    </div>
+                    <h1 className="product-detail-content">
+                      {this.props.mproductDetail.name}
+                    </h1>
 
                     <img src="images/product-details/rating.png" alt="" />
 
                     <span>
-                      <div>
-                        <span>Giá:</span>
-                        <span>{this.props.mproductDetail.price}</span>
-                        <span>
-                          <sup>đ</sup>
-                        </span>
+                      <div className="price-display">
+                        {this.props.mproductDetail.discount > 0 &&
+                        this.props.mproductDetail.discount !==
+                          this.props.mproductDetail.price ? (
+                          <Fragment>
+                            <div className="price-wrapper1">
+                              <span className="discounted-price">
+                                {" "}
+                                {new Intl.NumberFormat("de-DE").format(
+                                  this.props.mproductDetail.discount
+                                )}
+                                <sup>đ</sup>
+                              </span>
+                              <span className="original-price1">
+                                {" "}
+                                <span
+                                  style={{ textDecoration: "line-through" }}
+                                >
+                                  {new Intl.NumberFormat("de-DE").format(
+                                    this.props.mproductDetail.price
+                                  )}
+                                  <sup>đ</sup>
+                                </span>
+                              </span>
+                            </div>
+                          </Fragment>
+                        ) : (
+                          <span className="normal-price">
+                            Giá:{" "}
+                            {new Intl.NumberFormat("de-DE").format(
+                              this.props.mproductDetail.price
+                            )}
+                            <sup>đ</sup>
+                          </span>
+                        )}
                       </div>
                       <div className="count-product">
                         <p className="count">Số Lượng:</p>
@@ -224,13 +279,35 @@ class ContentProductDetail extends Component {
                           value={this.state.quantity}
                         />
                       </div>
+                      <div
+                        className="add-to-cart"
+                        style={{ display: "flex", gap: "10px" }}
+                      >
+                        <button
+                          onClick={() => this.submitOrder()}
+                          type="button"
+                          className=" cart"
+                        >
+                          <i className="fa fa-shopping-cart" />
+                          Add to cart
+                        </button>
+
+                        <button
+                          onClick={() => this.handleBuyNow()}
+                          type="button"
+                          className="cart"
+                        >
+                          <i className="fa fa-shopping-cart" />
+                          Mua ngay
+                        </button>
+                      </div>
                     </span>
                     <p>{this.state.noti}</p>
                     <p>
                       <b>Category:</b> {this.props.nameCategory}
                     </p>
                     <p>
-                      <b>Release date: </b>{" "}
+                      <b>Release date </b>{" "}
                       {new Date(
                         this.props.mproductDetail.release_date
                       ).toDateString("yyyy-MM-dd")}
@@ -240,6 +317,9 @@ class ContentProductDetail extends Component {
                     </p>
                     <p>
                       <b>Author:</b> {this.props.nameAuthor}
+                    </p>
+                    <p>
+                      <b>Mô tả:</b> {this.props.mproductDetail.describe}
                     </p>
                   </div>
                   <Modal
@@ -291,7 +371,6 @@ class ContentProductDetail extends Component {
                           <b>Bình Luận</b>
                         </h4>
                       </p>
-
                       <form action="#">
                         <textarea
                           value={this.state.comment}
@@ -328,13 +407,49 @@ class ContentProductDetail extends Component {
                                   <div className="productinfo text-center">
                                     <a href={"/product/" + element._id}>
                                       <img src={element.img} alt="" />
-                                      <h2>
-                                        {" "}
-                                        {new Intl.NumberFormat("de-DE", {
-                                          currency: "EUR",
-                                        }).format(element.price)}
-                                        <sup>đ</sup>
-                                      </h2>
+                                      <div className="price-display">
+                                        {element.discount > 0 &&
+                                        element.discount !== element.price ? (
+                                          <Fragment>
+                                            <span className="original-price">
+                                              <span
+                                                style={{
+                                                  textDecoration:
+                                                    "line-through",
+                                                }}
+                                              >
+                                                {new Intl.NumberFormat(
+                                                  "de-DE"
+                                                ).format(element.price)}
+                                                <sup>đ</sup>
+                                              </span>
+                                            </span>
+                                            <span className="discounted-price">
+                                              {new Intl.NumberFormat(
+                                                "de-DE"
+                                              ).format(element.discount)}
+                                              <sup>đ</sup>
+                                            </span>
+                                            <span className="discount-badge">
+                                              -
+                                              {Math.round(
+                                                ((element.price -
+                                                  element.discount) /
+                                                  element.price) *
+                                                  100
+                                              )}
+                                              %
+                                            </span>
+                                          </Fragment>
+                                        ) : (
+                                          <h2>
+                                            {new Intl.NumberFormat(
+                                              "de-DE"
+                                            ).format(element.price)}
+                                            <sup>đ</sup>
+                                          </h2>
+                                        )}
+                                      </div>
                                       <p>{element.describe}</p>{" "}
                                     </a>
                                     <button

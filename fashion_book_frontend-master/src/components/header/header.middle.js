@@ -114,20 +114,24 @@ class HeaderMiddle extends Component {
       return (
         <ul className="sub-menu">
           <li onClick={() => this.handleProfile()}>
-            <Link to={"/"}>
-              <a>
-                <i className="fa fa-user-circle" /> Profile{" "}
-              </a>
-            </Link>
+            <button>
+              <Link to={"/"}>
+                <a>
+                  <i className="fa fa-user-circle" /> Profile{" "}
+                </a>
+              </Link>
+            </button>
           </li>
 
           <li>
-            <Link to="/purchase_history">
-              <a>
-                <i className="fa fa-box" />
-                Đơn Hàng{" "}
-              </a>
-            </Link>
+            <button>
+              <Link to="/purchase_history">
+                <a>
+                  <i className="fa fa-box" />
+                  Đơn Hàng{" "}
+                </a>
+              </Link>
+            </button>
           </li>
         </ul>
       );

@@ -191,7 +191,7 @@ class ContentHome extends Component {
                           name="optradio"
                           checked={this.state.check_5}
                         />{" "}
-                        >= 150.000
+                        Trên 150.000
                       </label>
                     </div>
 
