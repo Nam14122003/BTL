@@ -97,7 +97,7 @@ const book = new Schema({
             validator : Number.isInteger,
             message   : '{VALUE} is not an integer value'
         }
-    }
+    },
     discount: {
       type: Number,
       required: [true, "can't be blank"],
