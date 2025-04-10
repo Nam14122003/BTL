@@ -6,6 +6,7 @@ import ContentHome from './content.home'
 import FooterTop from '../footer/footer.top'
 import FooterMiddle from '../footer/footer.middle'
 import FooterBottom from '../footer/footer.bottom'
+import ChatBot from '../ChatBot/ChatBot'
 const Home = ({ islogin, logout, category,
     publisher, book, totalpage, backPage,
     nextPage, setPage, page, sortType, setSortType,
@@ -51,6 +52,7 @@ const Home = ({ islogin, logout, category,
                 <FooterMiddle />
                 <FooterBottom />
             </footer>
+            <ChatBot />
         </div>
 
     )
