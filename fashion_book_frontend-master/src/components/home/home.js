@@ -7,54 +7,71 @@ import FooterTop from '../footer/footer.top'
 import FooterMiddle from '../footer/footer.middle'
 import FooterBottom from '../footer/footer.bottom'
 import ChatBot from '../ChatBot/ChatBot'
-const Home = ({ islogin, logout, category,
-    publisher, book, totalpage, backPage,
-    nextPage, setPage, page, sortType, setSortType,
-    setRangeType, title, setTitle, setBranch, branch, 
-    setSearchText, author, setIDBranch, branchClick, history,
-    searchTextSubmit, addToCart }) => (
-        <div>
-            <header id="header">
-     
-                <HeaderMiddle
-                    islogin={islogin}
-                    logout={() => logout()}
-                    history={history}
-                />
-                <HeaderBottom
-                    sortType={sortType}
-                    setSortType={(value) => setSortType(value)}
-                    setSearchText={(value) => setSearchText(value)}
-                    searchTextSubmit={() =>searchTextSubmit()}
-                />
-            </header>
-            <ContentHome
-                category={category}
-                publisher={publisher}
-                book={book}
-                totalpage={totalpage}
-                backPage={() => backPage()}
-                nextPage={() => nextPage()}
-                setPage={(page) => setPage(page)}
-                page={page}
-                setRangeType={(range) => setRangeType(range)}
-                title={title}
-                setTitle={(title) => setTitle(title)}
-                setBranch={(branch) => setBranch(branch)}
-                branch={branch}
-                author={author}
-                setIDBranch={(id) => setIDBranch(id)}
-                branchClick={(branch, id) => branchClick(branch, id)}
-                addToCart={(product) => addToCart(product)}
-            />
-            <footer id="footer">
-                <FooterTop />
-                <FooterMiddle />
-                <FooterBottom />
-            </footer>
-            <ChatBot />
-        </div>
-
-    )
+const Home = ({
+  islogin,
+  logout,
+  category,
+  publisher,
+  book,
+  totalpage,
+  backPage,
+  nextPage,
+  setPage,
+  page,
+  sortType,
+  setSortType,
+  setRangeType,
+  title,
+  setTitle,
+  setBranch,
+  branch,
+  setSearchText,
+  author,
+  setIDBranch,
+  branchClick,
+  history,
+  searchTextSubmit,
+  addToCart
+}) => (
+  <div>
+    <header id="header">
+      <HeaderMiddle
+        islogin={islogin}
+        logout={() => logout()}
+        history={history}
+        sortType={sortType}
+        setSortType={(value) => setSortType(value)}
+        setSearchText={(value) => setSearchText(value)}
+        searchTextSubmit={() => searchTextSubmit()}
+      />
+      <HeaderBottom />
+    </header>
+    <ContentHome
+      category={category}
+      publisher={publisher}
+      book={book}
+      totalpage={totalpage}
+      backPage={() => backPage()}
+      nextPage={() => nextPage()}
+      setPage={(page) => setPage(page)}
+      page={page}
+      setRangeType={(range) => setRangeType(range)}
+      title={title}
+      setTitle={(title) => setTitle(title)}
+      setBranch={(branch) => setBranch(branch)}
+      branch={branch}
+      author={author}
+      setIDBranch={(id) => setIDBranch(id)}
+      branchClick={(branch, id) => branchClick(branch, id)}
+      addToCart={(product) => addToCart(product)}
+    />
+    <footer id="footer">
+      <FooterTop />
+      <FooterMiddle />
+      <FooterBottom />
+    </footer>
+    <ChatBot />
+  </div>
+);
 
 export default Home
