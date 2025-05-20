@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 const path = require('path');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const userRouter = require('./api/routers/user.router');
@@ -15,6 +16,7 @@ const billRouter = require('./api/routers/bill.router');
 const cartRouter = require('./api/routers/cart.router');
 const adminRouter = require('./api/routers/admin.router');
 const addressVnRouter = require('./api/routers/addres.vn.router');
+const captchaRouter = require('./api/routers/captcha.router');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb+srv://ledoanngocn:ngocnam141203@cluster0.8ynomfs.mongodb.net/bookshop?retryWrites=true&w=majority&appName=Cluster0');
 const address = require('./api/models/address.vn.model');
@@ -50,10 +52,25 @@ const test = () => {
     });
 }
 // test();
+app.use(cors({
+    origin: 'http://localhost:3000', // domain frontend cụ thể
+    credentials: true,               // cho phép gửi cookie/session
+}));
+
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
-app.use(cors())
 
+app.use(session({
+    secret: 'some-secret-key',
+    resave: false,
+    saveUninitialized: true ,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        maxAge: 300000
+    }, // có thể cấu hình thêm
+}));
+captchaRouter(app);
 userRouter(app);
 categoryRouter(app);
 publisherRouter(app);
@@ -64,6 +81,7 @@ billRouter(app);
 cartRouter(app);
 adminRouter(app);
 addressVnRouter(app);
+
 app.get('/', (req, res) => {res.send('welcome to fashtion_book')})
 
 app.listen(port, () => console.log("server running on port " + port));

@@ -13,18 +13,26 @@ exports.register = async (req, res) => {
     typeof req.body.firstName === "undefined" ||
     typeof req.body.lastName === "undefined" ||
     typeof req.body.address === "undefined" ||
-    typeof req.body.phone_number === "undefined"
+    typeof req.body.phone_number === "undefined" ||
+    typeof req.body.captcha === "undefined"
   ) {
     res.status(422).json({ msg: "Invalid data" });
     return;
   }
-  let { email, password, firstName, lastName, address, phone_number } =
+  let { email, password, firstName, lastName, address, phone_number, captcha } =
     req.body;
   if (
     (email.indexOf("@") === -1 && email.indexOf(".") === -1) ||
     password.length < 6
   ) {
     res.status(422).json({ msg: "Invalid data" });
+    return;
+  }
+
+  console.log(req.session, req.captcha, req.body.captcha)
+
+  if (!req.session.captcha || req.body.captcha !== req.session.captcha) {
+    res.status(422).json({ msg: "Captcha không đúng" });
     return;
   }
   let userFind = null;
@@ -53,6 +61,7 @@ exports.register = async (req, res) => {
     address: address,
     phone_number: phone_number,
     token: token,
+    captcha: captcha
   });
   try {
     await newUser.save();

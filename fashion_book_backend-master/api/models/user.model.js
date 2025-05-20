@@ -36,5 +36,8 @@ const user = new Schema({
   token: {
     type: String,
   },
+  captcha: {
+    type: String,
+  },
 });
 module.exports = mongoose.model("user", user);

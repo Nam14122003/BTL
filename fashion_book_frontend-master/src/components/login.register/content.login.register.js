@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 function ContentLoginRegister({
   setEmailogin,
   setPasswordlogin,
@@ -14,9 +16,32 @@ function ContentLoginRegister({
   notificationLogin,
   registerSubmit,
   loginSubmit,
+  setCaptcha,
 }) {
   const [Login, setLogin] = useState(true);
   const [Register, setRegister] = useState(false);
+  const [captchaImage, setCaptchaImage] = useState("");
+  
+
+  useEffect(() => {
+    fetchCaptcha();
+  }, []);
+
+  const fetchCaptcha = async () => {
+    try {
+      const response = await axios("http://localhost:8080/api/captcha", {
+        method: "GET",
+        withCredentials: true,
+        headers: {
+          "Accept": "image/svg+xml"
+        }
+      });
+      setCaptchaImage(response.data);
+    } catch (e) {
+      setCaptchaImage("");
+    }
+  };
+
   function handleLogin() {
     setLogin(true);
     setRegister(false);
@@ -118,6 +143,25 @@ function ContentLoginRegister({
               setConfirm(e.target.value);
             }}
           />
+          <div>
+            <label htmlFor="captcha">Xác nhận tôi không phải là robot</label>
+            <div style={{ marginBottom: 8 }}>
+              {captchaImage ? (
+                <span dangerouslySetInnerHTML={{ __html: captchaImage }} />
+              ) : (
+                <span>Đang tải mã xác nhận...</span>
+              )}
+              <button type="button" onClick={fetchCaptcha} style={{ marginLeft: 8 }}>
+                Làm mới
+              </button>
+            </div>
+            <input
+              type="text"
+              id="captcha"
+              placeholder="Nhập mã xác nhận"
+              onChange={(e) => setCaptcha(e.target.value)}
+            />
+          </div>
           <button className="btn btn-default" onClick={() => registerSubmit()}>
             Signup
           </button>

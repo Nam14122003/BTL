@@ -20,6 +20,7 @@ const Home = ({
   notificationLogin,
   registerSubmit,
   loginSubmit,
+  setCaptcha,
   islogin,
   logout,
   sortType,
@@ -33,6 +34,7 @@ const Home = ({
       setEmailogin={(value) => setEmailogin(value)}
       setPasswordlogin={(value) => setPasswordlogin(value)}
       setEmail={(value) => setEmail(value)}
+      setCaptcha={(value) => setCaptcha(value)}
       setFirstname={(value) => setFirstname(value)}
       setLastname={(value) => setLastname(value)}
       setAddress={(value) => setAddress(value)}

@@ -20,7 +20,7 @@ class LoginRegisterContainer extends Component {
             confirm: '',
             notificationRegister: '',
             notificationLogin: '',
-
+            captcha: '',
         }
     }
     componentWillMount() {
@@ -89,14 +89,29 @@ class LoginRegisterContainer extends Component {
                 firstName: this.state.firstname,
                 lastName: this.state.lastname,
                 address: this.state.address,
-                phone_number: this.state.phone
+                phone_number: this.state.phone,
+                captcha: this.state.captcha,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
             })
         }
         catch (err) {
-            if (err.response.data.msg === "Email already exist")
-                this.setState({ notificationRegister: 'Email already exist' })
-            else
+            if (err.response && err.response.data) {
+                if (err.response.data.msg === "Email already exist")
+                    this.setState({ notificationRegister: 'Email already exist' })
+                else if (
+                    (err.response.data.msg && err.response.data.msg.toLowerCase().includes("captcha")) ||
+                    (err.response.data.message && err.response.data.message.toLowerCase().includes("captcha"))
+                )
+                    this.setState({ notificationRegister: err.response.data.msg || err.response.data.message })
+                else
+                    this.setState({ notificationRegister: 'Đăng Ký Thất Bại' })
+            } else {
                 this.setState({ notificationRegister: 'Đăng Ký Thất Bại' })
+            }
             return
         }
         this.setState({ notificationRegister: 'Đăng Ký Thành Công' })
@@ -140,6 +155,7 @@ class LoginRegisterContainer extends Component {
                     setEmailogin={(value) => this.setState({ emailLogin: value })}
                     setPasswordlogin={(value) => this.setState({ passwordLogin: value })}
                     setEmail={(value) => this.setState({ email: value })}
+                    setCaptcha={(value) => this.setState({ captcha: value })}
                     setFirstname={(value) => this.setState({ firstname: value })}
                     setLastname={(value) => this.setState({ lastname: value })}
                     setAddress={(value) => this.setState({ address: value })}
@@ -158,6 +174,7 @@ class LoginRegisterContainer extends Component {
                     setSearchText={(value) => this.props.homeActions.setSearchText(value)}
                     searchTextSubmit={() => this.props.homeActions.searchTextSubmit()}
                     history={this.props.history}
+                    // captcha={this.state.captcha}
                 />
             </div>
         )
