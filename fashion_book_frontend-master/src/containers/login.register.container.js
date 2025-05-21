@@ -21,6 +21,7 @@ class LoginRegisterContainer extends Component {
             notificationRegister: '',
             notificationLogin: '',
             captcha: '',
+            captchaLogin: '', // thêm trường captcha cho login
         }
     }
     componentWillMount() {
@@ -129,12 +130,18 @@ class LoginRegisterContainer extends Component {
             res = await axios.post('http://localhost:8080/user/login', {
                 email: this.state.emailLogin,
                 password: this.state.passwordLogin,
+                captcha: this.state.captchaLogin, // gửi captcha login
             })
         }
         catch (err) {
             if (err.response !== undefined) {
                 if (err.response.data.msg === "no_registration_confirmation")
                     this.setState({ notificationLogin: 'Tài Khoản Chưa Được Kích Hoạt, Vui Lòng Vào mail Để Kích Hoạt' })
+                else if (
+                    (err.response.data.msg && err.response.data.msg.toLowerCase().includes("captcha")) ||
+                    (err.response.data.message && err.response.data.message.toLowerCase().includes("captcha"))
+                )
+                    this.setState({ notificationLogin: err.response.data.msg || err.response.data.message })
                 else {
                     this.setState({ notificationLogin: 'Email or password invalid' })
                 }
@@ -156,6 +163,7 @@ class LoginRegisterContainer extends Component {
                     setPasswordlogin={(value) => this.setState({ passwordLogin: value })}
                     setEmail={(value) => this.setState({ email: value })}
                     setCaptcha={(value) => this.setState({ captcha: value })}
+                    setCaptchaLogin={(value) => this.setState({ captchaLogin: value })} // truyền hàm setCaptchaLogin
                     setFirstname={(value) => this.setState({ firstname: value })}
                     setLastname={(value) => this.setState({ lastname: value })}
                     setAddress={(value) => this.setState({ address: value })}

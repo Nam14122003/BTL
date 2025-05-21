@@ -29,8 +29,6 @@ exports.register = async (req, res) => {
     return;
   }
 
-  console.log(req.session, req.captcha, req.body.captcha)
-
   if (!req.session.captcha || req.body.captcha !== req.session.captcha) {
     res.status(422).json({ msg: "Captcha không đúng" });
     return;
@@ -105,13 +103,20 @@ exports.verifyAccount = async (req, res) => {
 
 exports.login = async (req, res) => {
   if (
-    typeof req.body.email === "undefined" ||
-    typeof req.body.password == "undefined"
+      typeof req.body.email === "undefined" ||
+      typeof req.body.password == "undefined" ||
+      typeof req.body.captcha === "undefined"
   ) {
-    res.status(402).json({ msg: "Invalid data" });
+    res.status(422).json({ msg: "Invalid data" });
     return;
   }
-  let { email, password } = req.body;
+  let { email, password, captcha } = req.body;
+
+  if (!req.session.captcha || captcha !== req.session.captcha) {
+    res.status(422).json({ msg: "Captcha không đúng" });
+    return;
+  }
+
   let userFind = null;
   try {
     userFind = await user.findOne({ email: email });

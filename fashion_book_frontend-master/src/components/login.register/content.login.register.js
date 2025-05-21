@@ -17,6 +17,7 @@ function ContentLoginRegister({
   registerSubmit,
   loginSubmit,
   setCaptcha,
+  setCaptchaLogin,
 }) {
   const [Login, setLogin] = useState(true);
   const [Register, setRegister] = useState(false);
@@ -76,6 +77,26 @@ function ContentLoginRegister({
                 setPasswordlogin(e.target.value);
               }}
               class="user"
+            />
+          </div>
+          {/* Thêm captcha vào form login */}
+          <div>
+            <label htmlFor="captcha-login">Xác nhận tôi không phải là robot</label>
+            <div style={{ marginBottom: 8 }}>
+              {captchaImage ? (
+                <span dangerouslySetInnerHTML={{ __html: captchaImage }} />
+              ) : (
+                <span>Đang tải mã xác nhận...</span>
+              )}
+              <button type="button" onClick={fetchCaptcha} style={{ marginLeft: 8 }}>
+                Làm mới
+              </button>
+            </div>
+            <input
+              type="text"
+              id="captcha-login"
+              placeholder="Nhập mã xác nhận"
+              onChange={(e) => setCaptchaLogin(e.target.value)}
             />
           </div>
           <button className="btn btn-default" onClick={() => loginSubmit()}>

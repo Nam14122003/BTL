@@ -21,6 +21,7 @@ const Home = ({
   registerSubmit,
   loginSubmit,
   setCaptcha,
+  setCaptchaLogin, // thêm prop này
   islogin,
   logout,
   sortType,
@@ -35,6 +36,7 @@ const Home = ({
       setPasswordlogin={(value) => setPasswordlogin(value)}
       setEmail={(value) => setEmail(value)}
       setCaptcha={(value) => setCaptcha(value)}
+      setCaptchaLogin={(value) => setCaptchaLogin(value)} // truyền xuống ContentLoginRegister
       setFirstname={(value) => setFirstname(value)}
       setLastname={(value) => setLastname(value)}
       setAddress={(value) => setAddress(value)}
