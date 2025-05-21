@@ -160,23 +160,77 @@ class LoginRegisterContainer extends Component {
         this.props.history.push('/')
 
     }
+    handleEmailLoginChange = (value) => {
+        this.setState({ emailLogin: value });
+        if (!this.isvalidEmail(value)) {
+            this.setState({ notificationLogin: "Email invalid" });
+        } else {
+            this.setState({ notificationLogin: "" });
+        }
+    }
+    handlePasswordLoginChange = (value) => {
+        this.setState({ passwordLogin: value });
+        // Có thể thêm validate password nếu muốn
+    }
+    handleEmailChange = (value) => {
+        this.setState({ email: value });
+        if (!this.isvalidEmail(value)) {
+            this.setState({ notificationRegister: "Email invalid" });
+        } else {
+            this.setState({ notificationRegister: "" });
+        }
+    }
+    handleFirstnameChange = (value) => {
+        this.setState({ firstname: value });
+        if (!this.isvalidFirstName(value)) {
+            this.setState({ notificationRegister: "Firstname invalid" });
+        } else {
+            this.setState({ notificationRegister: "" });
+        }
+    }
+    handleLastnameChange = (value) => {
+        this.setState({ lastname: value });
+        if (!this.isvalidLastName(value)) {
+            this.setState({ notificationRegister: "Lastname invalid" });
+        } else {
+            this.setState({ notificationRegister: "" });
+        }
+    }
+    handlePasswordChange = (value) => {
+        this.setState({ password: value });
+        if (!this.isvalidPassword(value)) {
+            this.setState({ notificationRegister: "Password invalid" });
+        } else if (!this.isvalidConfirm(value, this.state.confirm)) {
+            this.setState({ notificationRegister: "Confirm invalid" });
+        } else {
+            this.setState({ notificationRegister: "" });
+        }
+    }
+    handleConfirmChange = (value) => {
+        this.setState({ confirm: value });
+        if (!this.isvalidConfirm(this.state.password, value)) {
+            this.setState({ notificationRegister: "Confirm invalid" });
+        } else {
+            this.setState({ notificationRegister: "" });
+        }
+    }
     render() {
         return (
             <div>
                 <LoginRegister
-                    setEmailogin={(value) => this.setState({ emailLogin: value })}
-                    setPasswordlogin={(value) => this.setState({ passwordLogin: value })}
-                    setEmail={(value) => this.setState({ email: value })}
+                    setEmailogin={this.handleEmailLoginChange}
+                    setPasswordlogin={this.handlePasswordLoginChange}
+                    setEmail={this.handleEmailChange}
                     setCaptcha={(value) => this.setState({ captcha: value })}
-                    setCaptchaLogin={(value) => this.setState({ captchaLogin: value })} // truyền hàm setCaptchaLogin
-                    setFirstname={(value) => this.setState({ firstname: value })}
-                    setLastname={(value) => this.setState({ lastname: value })}
+                    setCaptchaLogin={(value) => this.setState({ captchaLogin: value })}
+                    setFirstname={this.handleFirstnameChange}
+                    setLastname={this.handleLastnameChange}
                     setAddress={(value) => this.setState({ address: value })}
                     setPhone={(value) => this.setState({ phone: value })}
                     notificationRegister={this.state.notificationRegister}
                     notificationLogin={this.state.notificationLogin}
-                    setPassword={(value) => this.setState({ password: value })}
-                    setConfirm={(value) => this.setState({ confirm: value })}
+                    setPassword={this.handlePasswordChange}
+                    setConfirm={this.handleConfirmChange}
                     registerSubmit={() => this.registerSubmit()}
                     loginSubmit={() => this.loginSubmit()}
                     islogin={this.props.islogin}
