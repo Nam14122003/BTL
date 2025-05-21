@@ -130,7 +130,12 @@ class LoginRegisterContainer extends Component {
             res = await axios.post('http://localhost:8080/user/login', {
                 email: this.state.emailLogin,
                 password: this.state.passwordLogin,
-                captcha: this.state.captchaLogin, // gửi captcha login
+                captcha: this.state.captchaLogin,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
             })
         }
         catch (err) {

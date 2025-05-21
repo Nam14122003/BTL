@@ -112,6 +112,7 @@ exports.login = async (req, res) => {
   }
   let { email, password, captcha } = req.body;
 
+  console.log('captcha', req.session);
   if (!req.session.captcha || captcha !== req.session.captcha) {
     res.status(422).json({ msg: "Captcha không đúng" });
     return;
