@@ -80,7 +80,7 @@ const Home = ({
             ×
           </button>
           <a
-            href="https://vrchallenge.io/"
+            href="https://pibook.vn/?srsltid=AfmBOoqL7vcllFtmElCXzNW1izpVYj53mSNUunUAp9z8nMkdGJSjz63b"
             target="_blank"
             rel="noopener noreferrer"
             style={{ display: "block", width: "100%", height: 70 }}
