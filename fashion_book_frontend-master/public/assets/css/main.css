@@ -3312,3 +3312,9 @@ li span {
   background-color: #f0f0e9 !important;
   height: 33.88px !important;
 }
+
+li span.cart{
+  width: 260px !important;
+  height: 33px !important;
+  color: red;
+}

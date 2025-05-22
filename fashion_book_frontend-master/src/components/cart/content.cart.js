@@ -320,7 +320,7 @@ class ContentCart extends Component {
                         marginBottom: "10px",
                       }}
                     >
-                      <span>Tổng tiền hàng</span>
+                      <span className="cart">Tổng tiền hàng</span>
                       <span style={{ minWidth: "120px", textAlign: "right" }}>
                         {Math.max(0, this.state.total).toLocaleString()}
                         <sup>đ</sup>
@@ -334,7 +334,7 @@ class ContentCart extends Component {
                         marginBottom: "10px",
                       }}
                     >
-                      <span>Giảm giá</span>
+                      <span className="cart">Giảm giá</span>
                       <span
                         style={{
                           minWidth: "120px",
@@ -354,7 +354,7 @@ class ContentCart extends Component {
                         marginBottom: "10px",
                       }}
                     >
-                      <span>Phí vận chuyển</span>
+                      <span className="cart">Phí vận chuyển</span>
                       <span style={{ minWidth: "120px", textAlign: "right" }}>
                         0<sup>đ</sup>
                       </span>
@@ -366,7 +366,7 @@ class ContentCart extends Component {
                         gap: "20px",
                       }}
                     >
-                      <span>Tổng thanh toán</span>
+                      <span className="cart">Tổng thanh toán</span>
                       <span
                         style={{
                           minWidth: "120px",
