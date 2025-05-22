@@ -15,6 +15,7 @@ class ContentProductDetail extends Component {
       noti: false,
       show: false,
       pagination: [],
+      progress: 0,
     };
   }
   componentDidUpdate(prevProps) {
@@ -132,13 +133,24 @@ class ContentProductDetail extends Component {
       this.setState({ noti: false });
       return;
     } else {
-      this.setState({ noti: true });
+      this.setState({ noti: true, progress: 0 }, this.startProgressBar);
     }
     let product = this.props.mproductDetail;
     product.count = this.state.quantity;
     this.props.addToCart(product);
   };
-
+  startProgressBar = () => {
+    let progressInterval = setInterval(() => {
+      if (this.state.progress >= 100) {
+        clearInterval(progressInterval);
+        this.setState({ noti: false }); // Tự đóng alert-box
+      } else {
+        this.setState((prevState) => ({
+          progress: prevState.progress + 5,
+        }));
+      }
+    }, 100); // Mỗi 100ms tăng 5% => 2 giây hoàn tất
+  };
   handleBuyNow = () => {
     if (this.state.quantity < 0) {
       return;
@@ -155,23 +167,27 @@ class ContentProductDetail extends Component {
     if (this.state.noti) {
       xhtml = (
         <div className="aler-box">
-          <div
-            className="btn-close "
-            onClick={() => this.setState({ noti: false })}
-          >
-            X
-          </div>
           <div className="aler-title">
             <h3 className="title">Thông Tin Đơn Hàng</h3>
           </div>
           <div className="aler-body">Đặt Hàng thành công</div>
           <div className="alert-footer">
-            <button
-              className="roduct-variation"
-              onClick={() => this.setState({ noti: false })}
+            <div
+              className="progress-container"
+              style={{ width: "100%", background: "#ddd", borderRadius: "8px" }}
             >
-              Cancel
-            </button>
+              <div
+                className="progress-bar"
+                style={{
+                  width: `${this.state.progress}%`,
+                  height: "10px",
+                  backgroundColor: "#28a745",
+                  borderRadius: "8px",
+                  transition: "width 0.1s linear",
+                }}
+              ></div>
+            </div>
+            <p style={{ marginTop: "5px" }}>{this.state.progress}%</p>
           </div>
         </div>
       );

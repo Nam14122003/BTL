@@ -30,39 +30,68 @@ class ContentHome extends Component {
     }
   }
   renderPagination() {
-    if (this.state.pagination.length === 0) {
-      return null;
+    const { pagination } = this.state;
+    const { page, setPage, backPage, nextPage } = this.props;
+    const total = pagination.length;
+
+    if (total === 0) return null;
+
+    const createPage = (p) => (
+      <li
+        key={p}
+        className={p === page ? "active" : ""}
+        onClick={() => setPage(p)}
+      >
+        <Link to="#">{p}</Link>
+      </li>
+    );
+
+    const pages = [];
+
+    if (total <= 5) {
+      // Nếu tổng trang nhỏ hơn hoặc bằng 5 thì hiển thị hết
+      for (let i = 1; i <= total; i++) {
+        pages.push(createPage(i));
+      }
     } else {
-      return (
-        <ul className="pagination pagination-custom">
-          <li onClick={() => this.props.backPage()}>
-            <Link to="/">&laquo;</Link>
+      // Luôn hiển thị 2 trang cuối
+      const lastTwo = [total - 1, total];
+
+      // Xác định 3 trang đầu hiển thị dựa trên page hiện tại
+      let startPage = page - 1;
+      if (startPage < 1) startPage = 1;
+      if (startPage + 2 > total - 2) startPage = total - 4; // tránh vượt qua phần 2 trang cuối
+
+      // Thêm 3 trang đầu (gần với page)
+      for (let i = startPage; i < startPage + 3; i++) {
+        pages.push(createPage(i));
+      }
+      if (startPage + 2 < total - 2) {
+        pages.push(
+          <li key="ellipsis" className="disabled">
+            <span>...</span>
           </li>
-          {this.state.pagination.map((element, index) => {
-            if (this.props.page === element) {
-              return (
-                <li
-                  className="active"
-                  onClick={() => this.props.setPage(element)}
-                >
-                  <Link to="/">{element}</Link>
-                </li>
-              );
-            } else {
-              return (
-                <li onClick={() => this.props.setPage(element)}>
-                  <Link to="/">{element}</Link>
-                </li>
-              );
-            }
-          })}
-          <li onClick={() => this.props.nextPage()}>
-            <Link to="/">&raquo;</Link>
-          </li>
-        </ul>
-      );
+        );
+      }
+
+      lastTwo.forEach((p) => {
+        pages.push(createPage(p));
+      });
     }
+
+    return (
+      <ul className="pagination pagination-custom">
+        <li onClick={backPage}>
+          <Link to="#">&laquo;</Link>
+        </li>
+        {pages}
+        <li onClick={nextPage}>
+          <Link to="#">&raquo;</Link>
+        </li>
+      </ul>
+    );
   }
+
   resetCheck = () => {
     this.setState({
       check_1: false,

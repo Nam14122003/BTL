@@ -288,18 +288,16 @@ a#scrollUp i {
   color: #fdb45e;
 }
 .aler-box {
-  padding: 3rem 10rem;
-  border: 1px solid violet;
-  box-shadow: 0 0 20px rgb(249 168 168 / 84%), 0 0 20px rgb(242 146 246 / 45%),
-    0 0 30px rgb(151 144 250 / 25%), 0 0 30px rgb(247 219 219 / 10%);
-  z-index: 99;
   position: fixed;
-  top: 50%;
+  top: 20%;
   left: 50%;
-  transform: translate(-50%, -100%);
-
-  max-width: 800px;
-  background-color: #fefefe;
+  transform: translateX(-50%);
+  background: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  z-index: 1000;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px #aaa;
 }
 .btn-close {
   position: absolute;
@@ -467,8 +465,8 @@ ul.sub-menu {
 }
 
 .video-gallery a img {
-  height: 100%;
-  width: 100%;
+  height: 90%;
+  width: 90%;
 }
 
 .iframe-img {
@@ -1019,7 +1017,7 @@ h2.title {
 }
 
 .productinfo img {
-  width: 100%;
+  width: 90%;
   max-height: 210px;
   min-height: 200px;
   border-radius: 10px;
@@ -1031,16 +1029,16 @@ h2.title {
   flex-direction: row;
   gap: 10px;
   position: absolute;
-  top: 255px;
-  left: 40px;
+  top: 265px;
+  left: 35px;
 }
 .star-rating {
   display: flex;
   flex-direction: row;
   gap: 10px;
   position: absolute;
-  top: 310px;
-  left: 30px;
+  top: 320px;
+  left: 40px;
 }
 .product-content p {
   text-align: center;
@@ -2925,11 +2923,11 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 65vh;
+  min-height: 75vh;
 }
 .container1 img {
-  height: 280px;
-  width: 180px;
+  height: 250px;
+  width: 170px;
 }
 .container1 {
   height: 280px;
@@ -2967,7 +2965,7 @@ textarea {
   transition: transform 1s ease-in-out !important;
 }
 .img_hover:hover {
-  transform: scale(0.9) !important;
+  transform: scale(1.1) !important;
 }
 .custom-price-range {
   margin-top: 15px;
@@ -3003,7 +3001,7 @@ textarea {
   border: 2px solid rgba(252, 252, 252, 0.4);
   background-color: rgba(239, 230, 230, 0.05);
   position: absolute;
-  top: 35%;
+  top: 30%;
   left: 30%;
   width: 400px;
 
@@ -3017,7 +3015,7 @@ textarea {
   background-image: url("/assets/images/shop/SL.jpg");
   background-size: cover;
   background-position: center;
-  height: 80vh;
+  height: 90vh;
 }
 .signup-form {
   background-image: url("/assets/images/shop/SL.jpg");
@@ -3056,6 +3054,7 @@ span {
   justify-content: center;
 }
 .sale {
+  z-index: 999999;
   position: absolute;
   right: -10px;
   width: 50px;
@@ -3147,7 +3146,7 @@ span {
   width: 100%;
   padding: 12px;
   color: black;
-  border: 1px solid orange;
+  border: 1px solid green;
   border-radius: 12px;
   font-size: 16px;
   background-color: #f5f5f5;
@@ -3248,4 +3247,68 @@ a {
 }
 span {
   margin: 0 !important;
+}
+
+.fade-banner {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.fade-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #f5f5f5; /* hoặc màu tương đồng với ảnh */
+  opacity: 0;
+  transition: transform 0.5s ease;
+  animation: fade 10s infinite;
+}
+
+.img1 {
+  animation-delay: 0s;
+}
+.img2 {
+  animation-delay: 2s;
+}
+.img3 {
+  animation-delay: 4s;
+}
+.img4 {
+  animation-delay: 6s;
+}
+.img5 {
+  animation-delay: 8s;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  10% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  30% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+li span {
+  cursor: pointer !important; /* chuột bình thường khi hover vào dấu ... */
+  width: 33.98px !important;
+  background-color: #f0f0e9 !important;
+  height: 33.88px !important;
 }
