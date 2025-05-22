@@ -53,8 +53,8 @@ const test = () => {
 }
 // test();
 app.use(cors({
-    origin: 'http://localhost:3000', // domain frontend cụ thể
-    credentials: true,               // cho phép gửi cookie/session
+    origin: ['http://localhost:3000', 'http://localhost:3001'], // cho phép nhiều domain
+    credentials: true,  // cho phép gửi cookie/session
 }));
 
 app.use(bodyParser.json({limit: '50mb'}));
